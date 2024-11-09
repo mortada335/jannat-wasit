@@ -15,7 +15,7 @@
         <VCard class="pa-3" @click="showPartnerDetails(item)" >
           <VRow>
             <VCol cols="12">
-              <img height="300px" width="400px" :src="item.img" />
+              <img :src="item.img" alt="item.id" />
             </VCol>     
           </VRow>
           <VRow justify="" dense>
@@ -108,11 +108,12 @@ const editPartnerTarget: any = ref({});
 const deleteItemTarget: any = ref();
 
 const items = ref([
-  { id: 1, img: "/src/assets/images/pages/1.png" },
-  { id: 2, img: "/src/assets/images/pages/2.png" },
-  { id: 3, img: "/src/assets/images/pages/3.png" },
-  { id: 4, img: "src/assets/images/pages/3.png" },
+  { id: 1, img: "../src/assets/images/pages/1.png" },
+  { id: 2, img: "../src/assets/images/pages/2.png" },
+  { id: 3, img: "../src/assets/images/pages/1.png" },
+  { id: 4, img: "../src/assets/images/pages/3.png" },
 ]);
+
 
 const openAddPartnerDialog = () => {
   addPartnerDialogVisible.value = true;
