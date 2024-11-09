@@ -12,10 +12,10 @@
     <!-- List of Partnerhips -->
     <VRow>
       <VCol v-for="item in items" :key="item.id" cols="12" md="4" sm="4" class="my-5">
-        <VCard class="pa-3" @click="showPartnerDetails(item)" max-width="400px" min-height="300px">
+        <VCard class="pa-3" @click="showPartnerDetails(item)" >
           <VRow>
             <VCol cols="12">
-              <VImg width="400px" :src="item.img" />
+              <VImg height="300px" width="400px" :src="item.img" />
             </VCol>     
           </VRow>
           <VRow justify="" dense>
@@ -111,7 +111,7 @@ const items = ref([
   { id: 1, img: "/src/assets/images/pages/1.png" },
   { id: 2, img: "/src/assets/images/pages/2.png" },
   { id: 3, img: "/src/assets/images/pages/3.png" },
-  { id: 4, img: "/src/assets/images/pages/3.png" },
+  { id: 4, img: "src/assets/images/pages/3.png" },
 ]);
 
 const openAddPartnerDialog = () => {
