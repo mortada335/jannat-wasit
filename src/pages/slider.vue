@@ -15,7 +15,7 @@
         <VCard class="pa-3" @click="showPartnerDetails(item)" >
           <VRow>
             <VCol cols="12">
-              <VImg height="300px" width="400px" :src="item.img" />
+              <img height="300px" width="400px" :src="item.img" />
             </VCol>     
           </VRow>
           <VRow justify="" dense>
