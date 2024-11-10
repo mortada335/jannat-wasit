@@ -2,69 +2,69 @@
   <div>
     <VCard>
       <VCardText class="text-left">
-        <VBtn ref="dialog" @click="openDialog" color="success">تغيير الإحصائيات</VBtn>
+        <VBtn @click="openDialog" color="success">تغيير الإحصائيات</VBtn>
       </VCardText>
     </VCard>
 
-    <VCol cols="12" md="6">
-      <VDialog persistent v-model="dialog" max-width="500">
-        <VCard>
-          <VCardTitle> تغيير الإحصائيات </VCardTitle>
-          <VCardText>
-            <VForm ref="form" v-model="valid" lazy-validation>
-              <VTextField
-                class="mb-5"
-                v-model="tempValues.investments.value"
-                label="Investments"
-                required
-              ></VTextField>
-              <VTextField
-                class="mb-5"
-                v-model="tempValues.equipment.value"
-                label="Equipment"
-                required
-              ></VTextField>
-              <VTextField
-                v-model="tempValues.projects.value"
-                label="Projects"
-                required
-              ></VTextField>
-            </VForm>
-          </VCardText>
+    <!-- <VCol cols="12" md="6"> -->
+    <VDialog persistent v-model="dialog" max-width="500px">
+      <VCard>
+        <VCardTitle> تغيير الإحصائيات </VCardTitle>
+        <VCardText>
+          <VForm ref="form" lazy-validation>
+            <VTextField
+              class="mb-5"
+              v-model="tempValues.investments.value"
+              label="Investments"
+              required
+            ></VTextField>
+            <VTextField
+              class="mb-5"
+              v-model="tempValues.equipment.value"
+              label="Equipment"
+              required
+            ></VTextField>
+            <VTextField
+              v-model="tempValues.projects.value"
+              label="Projects"
+              required
+            ></VTextField>
+          </VForm>
+        </VCardText>
 
-          <VCardActions>
-            <VBtn @click="closeDialog">Close</VBtn>
-            <VBtn @click="saveChanges">Save</VBtn>
-          </VCardActions>
-        </VCard>
-      </VDialog>
-    </VCol>
+        <VCardActions>
+          <VBtn @click="closeDialog">Close</VBtn>
+          <VBtn @click="saveChanges">Save</VBtn>
+        </VCardActions>
+      </VCard>
+    </VDialog>
+
     <!-- display the current statistics -->
-    <VRow>
-      <VCol cols="4" md="4">
-        <VCard class="text-center pa-6" outlined>
-          <VCardTitle color="success">
+    <VRow class="mt-2">
+      <VCol cols="12" md="4">
+        <VCard class="text-center pa-6">
+          <VCardTitle class="text-success text-2xl">
             {{ initialValues.investments.value }}
           </VCardTitle>
-          <VCardSubtitle>الاستثمارات</VCardSubtitle>
+          <VCardSubtitle class="text-base">الاستثمارات</VCardSubtitle>
         </VCard>
       </VCol>
 
       <VCol cols="4" md="4">
-        <VCard class="text-center pa-6" outlined>
-          <VCardTitle color="success">
+        <VCard class="text-center pa-6">
+          <VCardTitle class="text-success text-2xl">
             {{ initialValues.equipment.value }}
           </VCardTitle>
-          <VCardSubtitle>المعدات المثبتة</VCardSubtitle>
+          <VCardSubtitle class="text-base">المعدات المثبتة</VCardSubtitle>
         </VCard>
       </VCol>
 
       <VCol cols="4" md="4">
-        <VCard class="text-center pa-6" outlined>
-          <VCardTitle color="primary">
+        <VCard class="text-center pa-6">
+          <VCardTitle class="text-success text-2xl">
             {{ initialValues.projects.value }}
           </VCardTitle>
-          <VCardSubtitle>المشاريع المنتهية</VCardSubtitle>
+          <VCardSubtitle class="text-base">المشاريع المنتهية</VCardSubtitle>
         </VCard>
       </VCol>
     </VRow>
@@ -87,7 +87,6 @@ const tempValues = {
 };
 
 const dialog = ref(false);
-const valid = ref(true);
 
 const openDialog = () => {
   tempValues.investments.value = initialValues.investments.value;
