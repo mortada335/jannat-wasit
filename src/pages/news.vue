@@ -45,7 +45,7 @@
       </VRow>
     </VCard>
 
-<!-- filters transition -->
+    <!-- filters transition -->
     <VExpandTransition>
       <VCard v-show="isFilterMenuOpen" class="my-2 pa-2">
         <VList dense>
@@ -104,58 +104,66 @@
           <tr>
             <th>Title</th>
             <th class="text-center">Subtitle</th>
-            <th class="text-center" >Image</th>
-            <th>Date</th> 
-             <th>Phone Number</th>
-            <th >Actions</th>
+            <th class="text-center">Image</th>
+            <th>Date</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
           </tr>
         </thead>
       </VTable>
 
-      <v-skeleton-loader>    <VCard 
-        v-for="item in paginatedListItems.length ? paginatedListItems : items"
-        :key="item.id"
-        @click="showItemDetails(item)"
-      >
-        <VTable class="pa-2" density="default" min-height="300px">
-          <tbody>
-            <tr class="cursor-pointer">
-              <td>
-                {{ item.title }}
-              </td>
-              <td >{{ item.subtitle }}</td>
-            <td width="100px" >
-                <VImg :src="item.image" />
-              </td>
-              <td class="text-center">
-              {{ item.date }}
-              </td>
-              <td class="text-center">{{ item.phoneNumber }}</td>
-              <td>
-                <VRow no-gutters class="text-left">
-                  <VCol cols="6">
-                    <VBtn
-                      @click.stop="openDeleteDialog(item)"
-                      variant="plain"
-                      color="#eb2224"
-                    >
-                      <v-tooltip activator="parent" location="top">Delete</v-tooltip>
-                      <VIcon size="x-large" icon="mdi-trash-can" />
-                    </VBtn>
-                  </VCol>
-                  <VCol cols="2"
-                    ><VBtn @click.stop="openEditDialog(item)" variant="plain">
-                      <v-tooltip activator="parent" location="top">Edit</v-tooltip>
-                      <VIcon size="x-large" icon="mdi-square-edit-outline" /> </VBtn
-                  ></VCol>
-                </VRow>
-              </td>
-            </tr>
-          </tbody>
-        </VTable>
-        <VDivider></VDivider>
-      </VCard>
-  </v-skeleton-loader>
+      <v-skeleton-loader>
+        <VCard
+          v-for="item in paginatedListItems.length ? paginatedListItems : items"
+          :key="item.id"
+          @click="showItemDetails(item)"
+        >
+          <VTable class="pa-2" density="default" min-height="300px">
+            <tbody>
+              <tr class="cursor-pointer">
+                <td>
+                  {{ item.title }}
+                </td>
+                <td>{{ item.subtitle }}</td>
+                <td width="100px">
+                  <img :src="item.image" />
+                </td>
+                <td class="text-center">
+                  {{ item.date }}
+                </td>
+                <td class="text-center">{{ item.phoneNumber }}</td>
+                <td>
+                  <VRow no-gutters class="text-left">
+                    <VCol cols="6">
+                      <VBtn
+                        @click.stop="openDeleteDialog(item)"
+                        variant="plain"
+                        color="#eb2224"
+                      >
+                        <v-tooltip activator="parent" location="top"
+                          >Delete</v-tooltip
+                        >
+                        <VIcon size="x-large" icon="mdi-trash-can" />
+                      </VBtn>
+                    </VCol>
+                    <VCol cols="2"
+                      ><VBtn @click.stop="openEditDialog(item)" variant="plain">
+                        <v-tooltip activator="parent" location="top"
+                          >Edit</v-tooltip
+                        >
+                        <VIcon
+                          size="x-large"
+                          icon="mdi-square-edit-outline"
+                        /> </VBtn
+                    ></VCol>
+                  </VRow>
+                </td>
+              </tr>
+            </tbody>
+          </VTable>
+          <VDivider></VDivider>
+        </VCard>
+      </v-skeleton-loader>
       <VPagination
         v-model="listCurrentPage"
         :length="Math.ceil(filteredItems.length / itemsPerPage)"
@@ -165,52 +173,65 @@
 
     <!-- grid view -->
     <div v-if="viewMode === 'grid'">
-    <VRow>
-    <VCol cols="12" md="4" sm="4" class="" v-for="item in paginatedGridItems.length ? paginatedGridItems : items"
-        :key="item.id">  
-        <VCard
-        class="pa-3 service-card"
-        @click="showItemDetails(item)"
-      
-      >
-        <VRow>
-          <VCol cols="12">
-            <div class="service-info">
-              <p align="left"><strong>Title: </strong>{{ item.title }}</p>
-              <p align="left"><strong>Subtitle: </strong>{{ item.subtitle }}</p>
-              <p align="left" ><strong>Subtitle: </strong>{{ item.subtitle }}</p>
-              <p  align="left"><strong>Phone Number: </strong>{{ item.phoneNumber }}</p>
-              <p  align="left"><strong>Date: </strong>{{ item.date }}</p>
-              <p  align="left"><strong> :Image</strong></p>
-                <VCol cols="6" class="image-container">
-            <VImg :src="item.image" class="service-image" />
-          </VCol>
-            </div>
-          </VCol>
-        
-        </VRow>
-        <VRow justify="start" dense class="actions-row">
-          <VBtn @click.stop="openEditDialog(item)" variant="plain" color="primary">
-            <VTooltip activator="parent" location="top">Edit</VTooltip>
-            <VIcon icon="mdi-pencil" />
-          </VBtn>
-          <VBtn @click.stop="openDeleteDialog(item)" variant="plain" color="error">
-            <VTooltip activator="parent" location="top">Delete</VTooltip>
-            <VIcon icon="mdi-delete" />
-          </VBtn>
-        </VRow>
-      </VCard>
-      </VCol>
-    
-    </VRow>
+      <VRow>
+        <VCol
+          cols="12"
+          md="4"
+          sm="4"
+          class=""
+          v-for="item in paginatedGridItems.length ? paginatedGridItems : items"
+          :key="item.id"
+        >
+          <VCard class="pa-3 service-card" @click="showItemDetails(item)">
+            <VRow>
+              <VCol cols="12">
+                <div class="service-info">
+                  <p align="left"><strong>Title: </strong>{{ item.title }}</p>
+                  <p align="left">
+                    <strong>Subtitle: </strong>{{ item.subtitle }}
+                  </p>
+                  <p align="left">
+                    <strong>Subtitle: </strong>{{ item.subtitle }}
+                  </p>
+                  <p align="left">
+                    <strong>Phone Number: </strong>{{ item.phoneNumber }}
+                  </p>
+                  <p align="left"><strong>Date: </strong>{{ item.date }}</p>
+                  <p align="left"><strong> :Image</strong></p>
+                  <VCol cols="6" class="image-container">
+                    <VImg :src="item.image" class="service-image" />
+                  </VCol>
+                </div>
+              </VCol>
+            </VRow>
+            <VRow justify="start" dense class="actions-row">
+              <VBtn
+                @click.stop="openEditDialog(item)"
+                variant="plain"
+                color="primary"
+              >
+                <VTooltip activator="parent" location="top">Edit</VTooltip>
+                <VIcon icon="mdi-pencil" />
+              </VBtn>
+              <VBtn
+                @click.stop="openDeleteDialog(item)"
+                variant="plain"
+                color="error"
+              >
+                <VTooltip activator="parent" location="top">Delete</VTooltip>
+                <VIcon icon="mdi-delete" />
+              </VBtn>
+            </VRow>
+          </VCard>
+        </VCol>
+      </VRow>
       <VPagination
         v-model="listCurrentPage"
         :length="Math.ceil(filteredItems.length / itemsPerPage)"
         color="primary"
       />
-    
     </div>
-    
+
     <!-- add new service dialog -->
 
     <VDialog v-model="addServiceDialogVisible">
@@ -218,25 +239,41 @@
         <VCardTitle>Add New Service</VCardTitle>
         <VCardText class="text-center">
           <VCol class="text-center" cols="12" lg="12" md="8">
-            <VTextField required class="mb-3" label="title" v-model="newService.title" />
+            <VTextField
+              required
+              class="mb-3"
+              label="title"
+              v-model="newService.title"
+            />
             <VTextField
               required
               class="mb-3"
               label="subtitle"
               v-model="newService.subtitle"
             />
-            <VTextField required label="phone number" v-model="newService.phoneNumber" />
+            <VTextField
+              required
+              label="phone number"
+              v-model="newService.phoneNumber"
+            />
             <VTextField
               required
               class="mt-3"
               label="Date"
               v-model="newService.date"
             />
-            <VTextField required class="mt-3" label="Image" v-model="newService.image" />
+            <VTextField
+              required
+              class="mt-3"
+              label="Image"
+              v-model="newService.image"
+            />
           </VCol>
         </VCardText>
         <VCardActions>
-          <VBtn color="error" @click="addServiceDialogVisible = false">Cancel</VBtn>
+          <VBtn color="error" @click="addServiceDialogVisible = false"
+            >Cancel</VBtn
+          >
           <VBtn color="primary" @click="saveNewService">Save</VBtn>
         </VCardActions>
       </VCard>
@@ -254,7 +291,9 @@
           <VImg :src="selectedItem.image" width="200" />
         </VCardText>
         <VCardActions>
-          <VBtn color="primary" @click="detailsDialogVisible = false">Close</VBtn>
+          <VBtn color="primary" @click="detailsDialogVisible = false"
+            >Close</VBtn
+          >
         </VCardActions>
       </VCard>
     </VDialog>
@@ -267,7 +306,9 @@
           Are you sure you want to delete "{{ deleteItemTarget.title }}"?
         </VCardText>
         <VCardActions>
-          <VBtn color="error" text @click="deleteItem(deleteItemTarget)">Delete</VBtn>
+          <VBtn color="error" text @click="deleteItem(deleteItemTarget)"
+            >Delete</VBtn
+          >
           <VBtn text @click="deleteDialogVisible = false">Cancel</VBtn>
         </VCardActions>
       </VCard>
@@ -283,7 +324,10 @@
             label="Title"
             v-model="editItemTarget.title"
           ></VTextField>
-          <VTextField label="Subtitle" v-model="editItemTarget.subtitle"></VTextField>
+          <VTextField
+            label="Subtitle"
+            v-model="editItemTarget.subtitle"
+          ></VTextField>
           <VTextField
             label="Phone Number"
             class="mt-4"
@@ -297,7 +341,9 @@
         </VCardText>
         <VCardActions>
           <VBtn color="error" @click="editDialogVisible = false">Cancel</VBtn>
-          <VBtn color="success" @click="saveEdit" :loading="isSaving">Save</VBtn>
+          <VBtn color="success" @click="saveEdit" :loading="isSaving"
+            >Save</VBtn
+          >
         </VCardActions>
       </VCard>
     </VDialog>
@@ -317,7 +363,7 @@ const filteredItems: any = ref([]);
 const filterTitle: any = ref("");
 const filterSubtitle: any = ref("");
 const filterPhoneNumber: any = ref("");
-const filterDate:any=ref("")
+const filterDate: any = ref("");
 
 const selectedItem: any = ref(null);
 const deleteItemTarget: any = ref(null);
@@ -341,15 +387,15 @@ const items = ref([
     subtitle: "Subtitle 1",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/1.png",
-        date:'07/11/2024'
-  },                                             
+    date: "07/11/2024",
+  },
   {
     id: 2,
     title: "Service 2",
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/2.png",
-    date:'07/11/2024'
+    date: "07/11/2024",
   },
   {
     id: 3,
@@ -357,7 +403,7 @@ const items = ref([
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/3.png",
-        date:'07/11/2024'
+    date: "07/11/2024",
   },
   {
     id: 4,
@@ -365,7 +411,7 @@ const items = ref([
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/3.png",
-    date:'07/11/2024'
+    date: "07/11/2024",
   },
   {
     id: 5,
@@ -373,28 +419,32 @@ const items = ref([
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/2.png",
-    date:'07/11/2024'  },
+    date: "07/11/2024",
+  },
   {
     id: 6,
     title: "Service 2",
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/2.png",
-    date:'07/11/2024'  },
+    date: "07/11/2024",
+  },
   {
     id: 7,
     title: "Service 7",
     subtitle: "Subtitle 7",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/3.png",
-    date:'07/11/2024'  },
+    date: "07/11/2024",
+  },
   {
     id: 8,
     title: "Service 8",
     subtitle: "Subtitle 8",
     phoneNumber: "07721573742",
     image: "/src/assets/images/pages/1.png",
-    date:'07/11/2024'  },
+    date: "07/11/2024",
+  },
 ]);
 
 const newService: any = ref({
@@ -402,7 +452,7 @@ const newService: any = ref({
   subtitle: "",
   phoneNumber: "",
   image: "",
-  date:""
+  date: "",
 });
 const filterItems: any = (): any => {
   if (!items.value || items.value.length === 0) {
@@ -417,7 +467,7 @@ const filterItems: any = (): any => {
       item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       item.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       item.phoneNumber?.toString().includes(searchQuery.value) ||
-      item.date.toLowerCase().includes(searchQuery.value.toLowerCase())
+      item.date.toLowerCase().includes(searchQuery.value.toLowerCase());
 
     // Check if the item matches each specific filter field
     const matchesTitle =
@@ -429,16 +479,21 @@ const filterItems: any = (): any => {
     const matchesPhoneNumber =
       !filterPhoneNumber.value ||
       item.phoneNumber?.toString().includes(filterPhoneNumber.value);
-      const matchesDate =
+    const matchesDate =
       !filterPhoneNumber.value ||
       item.phoneNumber?.toString().includes(filterPhoneNumber.value);
 
-    return matchesSearchQuery && matchesTitle && matchesSubtitle && matchesPhoneNumber&&matchesDate;
+    return (
+      matchesSearchQuery &&
+      matchesTitle &&
+      matchesSubtitle &&
+      matchesPhoneNumber &&
+      matchesDate
+    );
   });
 
   console.log("Filtered Items:", filteredItems.value);
 };
-
 
 const paginatedGridItems = computed(() => {
   const startIndex = (gridCurrentPage.value - 1) * itemsPerPage.value;
@@ -464,14 +519,19 @@ const saveNewService = (): any => {
     newService.date
   ) {
     items.value = [...items.value, { ...newService.value, id: Date.now() }];
-    newService.value = { title: "", subtitle: "", phoneNumber: "", image: "",date:"" };
+    newService.value = {
+      title: "",
+      subtitle: "",
+      phoneNumber: "",
+      image: "",
+      date: "",
+    };
     addServiceDialogVisible.value = false;
     filterItems();
   } else {
     alert("please fill in full form to continue.");
   }
 };
-
 
 const showItemDetails: any = (item: any): any => {
   selectedItem.value = item;
@@ -502,7 +562,9 @@ const deleteItem: any = (itemToDelete: any): any => {
 const saveEdit = () => {
   isSaving.value = true;
   setTimeout(() => {
-    const index = items.value.findIndex((i) => i.id === editItemTarget.value.id);
+    const index = items.value.findIndex(
+      (i) => i.id === editItemTarget.value.id
+    );
     if (index !== -1) {
       items.value[index] = { ...editItemTarget.value };
 
@@ -522,7 +584,7 @@ const resetFilters: any = (): any => {
   filterTitle.value = "";
   filterSubtitle.value = "";
   filterPhoneNumber.value = "";
-  filterDate.value=""
+  filterDate.value = "";
   filterItems();
 };
 </script>
