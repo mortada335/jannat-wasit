@@ -240,13 +240,6 @@ const confirmDeletePartner = () => {
   padding: 16px;
 }
 
-img {
-  width: 100%;
-  height: 200px; /* Set a fixed height for consistent image sizing */
-  object-fit: cover;
-  border-radius: 8px;
-}
-
 .action-buttons {
   display: flex;
   align-items: center;
