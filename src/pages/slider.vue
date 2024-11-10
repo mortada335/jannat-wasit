@@ -159,9 +159,9 @@ const { t } = useI18n();
 
 const partners = ref([
   { id: 1, img: "src/assets/images/pages/1.png" },
-  { id: 2, img: "public/6.jpg" },
-  { id: 3, img: "public/3.png" },
-  { id: 4, img: "public/1.png" },
+  { id: 2, img: "/public/6.jpg" },
+  { id: 3, img: "/public/3.png" },
+  { id: 4, img: "/public/1.png" },
 ]);
 
 const openAddPartnerDialog = () => {
