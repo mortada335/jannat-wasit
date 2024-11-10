@@ -101,7 +101,7 @@
           <tr>
             <th>Title</th>
             <th class="text-center">Subtitle</th>
-            <th class="text-center">Image</th>
+            <th>Image</th>
             <th>Phone Number</th>
             <th>Actions</th>
           </tr>
@@ -119,8 +119,8 @@
                 {{ item.title }}
               </td>
               <td>{{ item.subtitle }}</td>
-              <td width="100px">
-                <img :src="item.image" />
+              <td>
+                <img style="width: 90px; height: 50px" :src="item.image" />
               </td>
               <td class="text-center">{{ item.phoneNumber }}</td>
               <td>
@@ -224,7 +224,15 @@
                   <strong>:Image</strong>
                 </p>
                 <VCol align="left" cols="12">
-                  <img :src="item.image" class="service-image" />
+                  <img
+                    :src="item.image"
+                    style="
+                      width: 90px;
+                      height: 70px;
+                      object-fit: contain;
+                      border-radius: 15px;
+                    "
+                  />
                 </VCol>
               </VCol>
             </VRow>
@@ -405,56 +413,56 @@ const items = ref([
     title: "Service 1",
     subtitle: "Subtitle 1",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/1.png",
+    image: "public/1.png",
   },
   {
     id: 2,
     title: "Service 2",
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/2.png",
+    image: "public/2.png",
   },
   {
     id: 3,
     title: "Service 3",
     subtitle: "Subtitle 3",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/3.png",
+    image: "public/3.png",
   },
   {
     id: 4,
     title: "Service 4",
     subtitle: "Subtitle 4",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/3.png",
+    image: "public/5.jpg",
   },
   {
     id: 5,
     title: "Service 5",
     subtitle: "Subtitle 5",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/2.png",
+    image: "public/2.png",
   },
   {
     id: 6,
     title: "Service 6",
     subtitle: "Subtitle 6",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/2.png",
+    image: "public/6.png",
   },
   {
     id: 7,
     title: "Service 7",
     subtitle: "Subtitle 7",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/3.png",
+    image: "public/1.png",
   },
   {
     id: 8,
     title: "Service 8",
     subtitle: "Subtitle 8",
     phoneNumber: "07721573742",
-    image: "/src/assets/images/pages/1.png",
+    image: "public/6.png",
   },
 ]);
 
@@ -605,11 +613,4 @@ const resetFilters: any = (): any => {
 };
 </script>
 
-<style scoped>
-.service-image {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-  border-radius: 15px;
-}
-</style>
+<style scoped></style>

@@ -41,7 +41,7 @@
 
     <!-- display the current statistics -->
     <VRow class="mt-2">
-      <VCol cols="12" md="4">
+      <VCol cols="12" md="4" sm="4">
         <VCard class="text-center pa-6">
           <VCardTitle class="text-success text-2xl">
             {{ initialValues.investments.value }}
@@ -50,7 +50,7 @@
         </VCard>
       </VCol>
 
-      <VCol cols="4" md="4">
+      <VCol cols="4" md="4" sm="4">
         <VCard class="text-center pa-6">
           <VCardTitle class="text-success text-2xl">
             {{ initialValues.equipment.value }}
@@ -59,7 +59,7 @@
         </VCard>
       </VCol>
 
-      <VCol cols="4" md="4">
+      <VCol cols="4" md="4" sm="4">
         <VCard class="text-center pa-6">
           <VCardTitle class="text-success text-2xl">
             {{ initialValues.projects.value }}

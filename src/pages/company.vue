@@ -158,10 +158,10 @@ const deleteItemTarget: any = ref();
 const { t } = useI18n();
 
 const partners = ref([
-  { id: 1, img: "/src/assets/images/pages/1.png" },
-  { id: 2, img: "/src/assets/images/pages/2.png" },
-  { id: 3, img: "/src/assets/images/pages/3.png" },
-  { id: 4, img: "/src/assets/images/pages/3.png" },
+  { id: 1, img: "public/1.png" },
+  { id: 2, img: "public/6.jpg" },
+  { id: 3, img: "public/3.png" },
+  { id: 4, img: "public/1.png" },
 ]);
 
 const openAddPartnerDialog = () => {
