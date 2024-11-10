@@ -33,8 +33,8 @@
         </VCardText>
 
         <VCardActions>
-          <VBtn @click="closeDialog">Close</VBtn>
-          <VBtn @click="saveChanges">Save</VBtn>
+          <VBtn @click="closeDialog" color="error">Cancel</VBtn>
+          <VBtn @click="saveChanges" color="success">Save</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>

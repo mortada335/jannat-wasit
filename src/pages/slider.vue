@@ -1,30 +1,30 @@
 <template>
   <div>
-    <!-- Header with Add New Partnership Button -->
+    <!-- Header with Add New Slider Button -->
     <VCard height="80px" class="pa-5">
       <VRow justify="left">
-        <VCol cols="12" md="10" sm="3" class="text-left">
-          <VBtn color="success" @click="openAddPartnerDialog"
-            >Add New Partnership</VBtn
+        <VCol cols="12" md="10" sm="4">
+          <VBtn color="success" @click="openAddSliderDialog"
+            >Add New Slider</VBtn
           >
         </VCol>
       </VRow>
     </VCard>
 
-    <!-- List of Partnerhips -->
+    <!-- List of Sliderhips -->
     <VRow no-gutters>
       <VCol
-        v-for="item in partners"
+        v-for="item in Sliders"
         :key="item.id"
         cols="12"
         md="4"
         sm="8"
         class="mt-4"
       >
-        <VCard class="card-style" @click="showPartnerDetails(item)">
+        <VCard class="card-style" @click="showSliderDetails(item)">
           <VRow>
-            <VCol>
-              <img :src="item.img" />
+            <VCol cols="12">
+              <img :src="item.img" :width="250" :height="100" />
             </VCol>
           </VRow>
           <VRow dense>
@@ -51,31 +51,31 @@
         </VCard>
       </VCol>
     </VRow>
-    <!-- Add Partner Dialog -->
-    <VDialog v-model="addPartnerDialogVisible">
+    <!-- Add Slider Dialog -->
+    <VDialog v-model="addSliderDialogVisible">
       <VCard class="mx-auto" width="440px">
-        <VCardTitle>Add New Partnership</VCardTitle>
+        <VCardTitle>Add New Slider</VCardTitle>
         <VCardText class="text-center">
           <VFileInput
-            v-model="newPartner.img"
+            v-model="newSlider.img"
             clearable
             label="Picture."
             accept="image/*"
           />
         </VCardText>
         <VCardActions>
-          <VBtn @click="addPartnerDialogVisible = false" color="error"
+          <VBtn @click="addSliderDialogVisible = false" color="error"
             >Cancel</VBtn
           >
-          <VBtn @click="saveNewPartner" color="success">Save</VBtn>
+          <VBtn @click="saveNewSlider" color="success">Save</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>
 
-    <!-- Edit Partner Dialog -->
-    <VDialog v-model="editPartnerDialogVisible">
+    <!-- Edit Slider Dialog -->
+    <VDialog v-model="editSliderDialogVisible">
       <VCard class="mx-auto" width="440px">
-        <VCardTitle>Edit Partnership</VCardTitle>
+        <VCardTitle>Edit Slider</VCardTitle>
 
         <VCardText class="text-center">
           <VFileInput
@@ -87,46 +87,46 @@
           />
           <!-- Preview the uploaded image -->
           <img
-            v-if="editPartnerTarget.img"
-            :src="editPartnerTarget.img"
+            v-if="editSliderTarget.img"
+            :src="editSliderTarget.img"
             alt="Preview"
             class="preview-image"
           />
         </VCardText>
 
         <VCardActions>
-          <VBtn @click="editPartnerDialogVisible = false" color="error"
+          <VBtn @click="editSliderDialogVisible = false" color="error"
             >Cancel</VBtn
           >
-          <VBtn :loading="isSaving" @click="saveEditedPartner" color="success"
+          <VBtn :loading="isSaving" @click="saveEditedSlider" color="success"
             >Save</VBtn
           >
         </VCardActions>
       </VCard>
     </VDialog>
-    <!-- Show Partner Dialog -->
-    <VDialog v-model="showPartnerDialogVisible">
+    <!-- Show Slider Dialog -->
+    <VDialog v-model="showSliderDialogVisible">
       <VCard class="mx-auto" width="400px">
-        <VCardTitle>View Partnership</VCardTitle>
+        <VCardTitle>View Slider</VCardTitle>
         <VCardText>
           <img :src="selectedItem.img" />
         </VCardText>
         <VCardActions>
-          <VBtn @click="showPartnerDialogVisible = false" color="success"
+          <VBtn @click="showSliderDialogVisible = false" color="success"
             >Close</VBtn
           >
         </VCardActions>
       </VCard>
     </VDialog>
 
-    <!-- Delete Partner Dialog -->
-    <VDialog v-model="deletePartnerDialogVisible">
+    <!-- Delete Slider Dialog -->
+    <VDialog v-model="deleteSliderDialogVisible">
       <VCard class="mx-auto" width="350px">
         <VCardTitle>{{ t("Confirm Deletion") }}</VCardTitle>
-        <VCardText>Are you sure you want to delete this partnership?</VCardText>
+        <VCardText>Are you sure you want to delete this Slider?</VCardText>
         <VCardActions>
-          <VBtn @click="confirmDeletePartner" color="error">Delete</VBtn>
-          <VBtn @click="deletePartnerDialogVisible = false" color="success"
+          <VBtn @click="confirmDeleteSlider" color="error">Delete</VBtn>
+          <VBtn @click="deleteSliderDialogVisible = false" color="success"
             >Cancel</VBtn
           >
         </VCardActions>
@@ -142,64 +142,61 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const emit = defineEmits(["update", "close", "save"]);
-const addPartnerDialogVisible = ref(false);
-const editPartnerDialogVisible = ref(false);
-const showPartnerDialogVisible = ref(false);
-const deletePartnerDialogVisible = ref(false);
+const addSliderDialogVisible = ref(false);
+const editSliderDialogVisible = ref(false);
+const showSliderDialogVisible = ref(false);
+const deleteSliderDialogVisible = ref(false);
 
 const isSaving = ref(false);
-const newPartner: any = ref({ img: "" });
+const newSlider: any = ref({ img: "" });
 const selectedItem: any = ref();
-let editPartnerTarget: any = ref({
+let editSliderTarget: any = ref({
   id: null,
   img: "",
 });
 const deleteItemTarget: any = ref();
 const { t } = useI18n();
 
-const partners = ref([
-  { id: 1, img: "src/assets/images/pages/1.png" },
-  { id: 2, img: "/public/6.jpg" },
-  { id: 3, img: "/public/3.png" },
-  { id: 4, img: "/public/1.png" },
+const Sliders = ref([
+  { id: 1, img: "/public/images/pages/5.jpg" },
+  { id: 2, img: "/public/images/pages/1.png" },
+  { id: 3, img: "/public/images/pages/1.png" },
+  { id: 4, img: "/public/images/pages/3.png" },
 ]);
 
-const openAddPartnerDialog = () => {
-  addPartnerDialogVisible.value = true;
+const openAddSliderDialog = () => {
+  addSliderDialogVisible.value = true;
 };
 
 const openDeleteDialog = (item: any) => {
   deleteItemTarget.value = item;
-  deletePartnerDialogVisible.value = true;
+  deleteSliderDialogVisible.value = true;
 };
 
 const openEditDialog = (item: any) => {
-  editPartnerTarget.value = { ...item };
-  editPartnerDialogVisible.value = true;
+  editSliderTarget.value = { ...item };
+  editSliderDialogVisible.value = true;
 };
-const saveNewPartner = () => {
-  if (newPartner.value.img) {
-    partners.value = [
-      ...partners.value,
-      { ...newPartner.value, id: Date.now() },
-    ];
-    newPartner.value.img = "";
-    addPartnerDialogVisible.value = false;
+const saveNewSlider = () => {
+  if (newSlider.value.img) {
+    Sliders.value = [...Sliders.value, { ...newSlider.value, id: Date.now() }];
+    newSlider.value.img = "";
+    addSliderDialogVisible.value = false;
   } else {
     alert("Please select an image to continue.");
   }
 };
 
-const saveEditedPartner = () => {
+const saveEditedSlider = () => {
   isSaving.value = true;
   setTimeout(() => {
-    const index = partners.value.findIndex(
-      (i) => i.id === editPartnerTarget.value.id
+    const index = Sliders.value.findIndex(
+      (i) => i.id === editSliderTarget.value.id
     );
     if (index !== -1) {
-      partners.value[index] = { ...editPartnerTarget.value };
+      Sliders.value[index] = { ...editSliderTarget.value };
     }
-    editPartnerDialogVisible.value = false;
+    editSliderDialogVisible.value = false;
     isSaving.value = false;
   }, 1000);
 };
@@ -210,24 +207,24 @@ const handleImageUpload = (event: Event) => {
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        // Assign the data URL to editPartnerTarget.img for preview and editing
-        editPartnerTarget.value.img = reader.result;
+        // Assign the data URL to editSliderTarget.img for preview and editing
+        editSliderTarget.value.img = reader.result;
       }
     };
     reader.readAsDataURL(file); // Read the file as a data URL
   }
 };
 
-const showPartnerDetails = (item: any) => {
+const showSliderDetails = (item: any) => {
   selectedItem.value = item;
-  showPartnerDialogVisible.value = true;
+  showSliderDialogVisible.value = true;
 };
 
-const confirmDeletePartner = () => {
-  partners.value = partners.value.filter(
+const confirmDeleteSlider = () => {
+  Sliders.value = Sliders.value.filter(
     (i) => i.id !== deleteItemTarget.value.id
   );
-  deletePartnerDialogVisible.value = false;
+  deleteSliderDialogVisible.value = false;
 };
 </script>
 <style>
