@@ -12,43 +12,43 @@
     </VCard>
 
     <!-- List of Sliderhips -->
-    <!-- <VRow no-gutters> -->
-    <VCol cols="12" md="4" sm="8" class="mt-4">
-      <VCard
-        class="card-style"
-        @click="showSliderDetails(item)"
-        v-for="item in sliders"
-        :key="item.id"
-      >
-        <VRow dense>
-          <VCol cols="8">
-            <VImg :src="item.img" />
-          </VCol>
-          <!-- </VRow> -->
-          <!-- <VRow dense> -->
-          <VCol cols="12" class="action-buttons">
-            Actions:
-            <VBtn
-              @click.stop="openEditDialog(item)"
-              variant="plain"
-              color="primary"
-            >
-              <VTooltip activator="parent" location="top">Edit</VTooltip>
-              <VIcon size="large" icon="mdi-pencil" />
-            </VBtn>
-            <VBtn
-              @click.stop="openDeleteDialog(item)"
-              variant="plain"
-              color="error"
-            >
-              <VTooltip activator="parent" location="top">Delete</VTooltip>
-              <VIcon size="large" icon="mdi-delete" />
-            </VBtn>
-          </VCol>
-        </VRow>
-      </VCard>
-    </VCol>
-    <!-- </VRow> -->
+    <VRow no-gutters>
+      <VCol cols="12" md="4" sm="8" class="mt-4">
+        <VCard
+          class="card-style"
+          @click="showSliderDetails(item)"
+          v-for="item in sliders"
+          :key="item.id"
+        >
+          <VRow dense>
+            <VCol>
+              <img :src="item.img" alt="img viewing" />
+            </VCol>
+            <!-- </VRow> -->
+            <!-- <VRow dense> -->
+            <VCol cols="12" class="action-buttons">
+              Actions:
+              <VBtn
+                @click.stop="openEditDialog(item)"
+                variant="plain"
+                color="primary"
+              >
+                <VTooltip activator="parent" location="top">Edit</VTooltip>
+                <VIcon size="large" icon="mdi-pencil" />
+              </VBtn>
+              <VBtn
+                @click.stop="openDeleteDialog(item)"
+                variant="plain"
+                color="error"
+              >
+                <VTooltip activator="parent" location="top">Delete</VTooltip>
+                <VIcon size="large" icon="mdi-delete" />
+              </VBtn>
+            </VCol>
+          </VRow>
+        </VCard>
+      </VCol>
+    </VRow>
     <!-- Add Slider Dialog -->
     <VDialog v-model="addSliderDialogVisible">
       <VCard class="mx-auto" width="440px">
@@ -156,7 +156,7 @@ const deleteItemTarget: any = ref();
 const { t } = useI18n();
 
 const sliders = ref([
-  { id: 1, img: "/public/images/pages/5.jpg" },
+  { id: 1, img: "images/pages/5.jpg" },
   { id: 2, img: "/public/images/pages/1.png" },
   { id: 3, img: "/public/images/pages/1.png" },
   { id: 4, img: "/public/images/pages/3.png" },
