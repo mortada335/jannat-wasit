@@ -21,9 +21,9 @@
         :key="item.id"
       >
         <VRow dense>
-          <!-- <VCol cols="12"> -->
-          <VImg width="250" height="260" :src="item.img" />
-          <!-- </VCol> -->
+          <VCol cols="8">
+            <VImg :src="item.img" />
+          </VCol>
           <!-- </VRow> -->
           <!-- <VRow dense> -->
           <VCol cols="12" class="action-buttons">
