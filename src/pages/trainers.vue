@@ -3,7 +3,7 @@
     <!-- search and filter box -->
     <VCard class="pa-5 mb-3">
       <VRow align="center">
-        <VCol cols="12" md="4" sm="4">
+        <VCol cols="12" md="3" sm="4">
           <VTextField
             v-model="searchQuery"
             single-line
@@ -14,7 +14,7 @@
           />
         </VCol>
 
-        <VCol cols="12" md="2" sm="2">
+        <VCol cols="12" md="3" sm="2">
           <VBtn
             @click="isFilterMenuOpen = !isFilterMenuOpen"
             :color="isFilterMenuOpen ? 'success' : 'dark'"
@@ -22,29 +22,19 @@
             <VIcon size="x-large" icon="mdi-filter-outline" />
           </VBtn>
         </VCol>
+        <VCard>
+          <VTabs color="success" v-model="viewMode">
+            <v-tab value="list">
+              <v-icon size="x-large" icon="mdi-view-list-outline" />
+            </v-tab>
+            <v-tab value="grid">
+              <v-icon size="x-large" icon="mdi-grid-large" />
+            </v-tab>
+          </VTabs>
+        </VCard>
 
-        <VTabs color="success " v-model="viewMode">
-          <v-tab value="list">
-            <v-icon size="x-large" icon="mdi-view-list-outline" />
-          </v-tab>
-          <v-tab value="grid">
-            <v-icon size="x-large" icon="mdi-grid-large" />
-          </v-tab>
-        </VTabs>
-
-        <v-card-text>
-          <v-tabs-window v-model="viewMode">
-            <v-tabs-window-item value="list"> </v-tabs-window-item>
-
-            <v-tabs-window-item value="grid"> </v-tabs-window-item>
-          </v-tabs-window>
-        </v-card-text>
-        <VCol cols="12" md="2">
-          <VBtn
-            v-show="$vuetify.display.mdAndUp"
-            color="success"
-            outlined
-            @click="openAddServiceDialog"
+        <VCol cols="12" md="3" sm="3">
+          <VBtn color="success" outlined @click="openAddServiceDialog"
             >Add New Service</VBtn
           ></VCol
         >
@@ -108,7 +98,7 @@
         </thead>
       </VTable>
       <VCard
-        v-for="item in paginatedListItems.length ? paginatedListItems : items"
+        v-for="item in paginatedListItems"
         :key="item.id"
         @click="showItemDetails(item)"
       >
@@ -120,7 +110,11 @@
               </td>
               <td>{{ item.subtitle }}</td>
               <td>
-                <img style="width: 90px; height: 50px" :src="item.image" />
+                <img
+                  style="width: 100px; height: 50px"
+                  alt="img view"
+                  :src="item.image"
+                />
               </td>
               <td class="text-center">{{ item.phoneNumber }}</td>
               <td>
@@ -280,18 +274,18 @@
             <VTextField
               required
               class="mb-3"
-              label="title"
+              label="Title"
               v-model="newService.title"
             />
             <VTextField
               required
               class="mb-3"
-              label="subtitle"
+              label="Subtitle"
               v-model="newService.subtitle"
             />
             <VTextField
               required
-              label="phone number"
+              label="Phone Number"
               v-model="newService.phoneNumber"
             />
             <VFileInput
@@ -300,15 +294,31 @@
               label="Image"
               v-model="newService.image"
               accept="image/*"
-              @change="handleImageUpload"
+              @change="(e:any)=>handleImageUpload(e,'add')"
+              :error-messages="imageError"
+              prepend-icon="mdi-camera"
             />
+
+            <div v-if="newService.imagePreview" class="mt-3">
+              <p class="mb-2">Preview</p>
+              <img
+                :src="newService.imagePreview"
+                alt="Preview"
+                style="
+                  max-width: 200px;
+                  max-height: 150px;
+                  object-fit: contain;
+                  border-radius: 4px;
+                "
+              />
+            </div>
           </VCol>
         </VCardText>
         <VCardActions>
           <VBtn color="error" @click="addServiceDialogVisible = false"
             >Cancel</VBtn
           >
-          <VBtn color="primary" @click="saveNewService">Save</VBtn>
+          <VBtn color="success" @click="saveNewService">Save</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>
@@ -351,24 +361,42 @@
     <VDialog v-model="editDialogVisible">
       <VCard class="mx-auto" width="440px">
         <VCardTitle>Edit Item</VCardTitle>
-        <VCardText>
-          <VTextField
-            class="mb-4"
-            label="Title"
-            v-model="editItemTarget.title"
-          ></VTextField>
-          <VTextField
-            label="Subtitle"
-            v-model="editItemTarget.subtitle"
-          ></VTextField>
-          <VTextField
-            label="Phone Number"
-            class="mt-4"
-            v-model="editItemTarget.phoneNumber"
-          ></VTextField>
-        </VCardText>
+        <CardText>
+          <VCol class="text-center" cols="12" lg="12" md="8"
+            ><VTextField
+              class="mb-4"
+              label="Title"
+              v-model="editItemTarget.title"
+              required
+            ></VTextField>
+            <VTextField
+              label="Subtitle"
+              v-model="editItemTarget.subtitle"
+              required
+            ></VTextField>
+            <VTextField
+              label="Phone Number"
+              class="mt-4"
+              v-model="editItemTarget.phoneNumber"
+              required
+            ></VTextField>
+            <VFileInput
+              class="mt-3"
+              label="Image"
+              accept="image/*"
+              @change="(e:any) => handleImageUpload(e, 'edit')"
+            />
+            <div v-if="editItemTarget.image" class="mt-3">
+              <img
+                :src="editItemTarget.image"
+                alt="Preview"
+                style="max-width: 200px; max-height: 150px; object-fit: contain"
+              />
+            </div>
+          </VCol>
+        </CardText>
         <VCardActions>
-          <VBtn color="error" @click="editDialogVisible = false">Cancel</VBtn>
+          <VBtn color="error" @click="cancelEdit">Cancel</VBtn>
           <VBtn color="success" @click="saveEdit" :loading="isSaving"
             >Save</VBtn
           >
@@ -384,22 +412,34 @@
 import { ref, watch, computed } from "vue";
 
 const searchQuery: any = ref("");
-const isFilterMenuOpen: any = ref(false);
 const viewMode: any = ref("list");
-const filteredItems: any = ref([]);
 
+const filteredItems: any = ref([]);
+const isFilterMenuOpen: any = ref(false);
 const filterTitle: any = ref("");
 const filterSubtitle: any = ref("");
 const filterPhoneNumber: any = ref("");
 
 const selectedItem: any = ref(null);
 const deleteItemTarget: any = ref(null);
-const editItemTarget: any = ref({});
+const editItemTarget: any = ref({
+  id: null,
+  title: "",
+  subtitle: "",
+  phoneNumber: "",
+  image: "",
+});
 
 const detailsDialogVisible: any = ref(false);
 const deleteDialogVisible: any = ref(false);
 const editDialogVisible: any = ref(false);
-const addServiceDialogVisible = ref(false);
+const addServiceDialogVisible: any = ref(false);
+
+const imageError = ref("");
+const imagePreview: any = ref<string | null>(null);
+
+const generateId = () =>
+  items.value.length ? Math.max(...items.value.map((item) => item.id)) + 1 : 1;
 
 const isSaving = ref(false);
 
@@ -413,56 +453,56 @@ const items = ref([
     title: "Service 1",
     subtitle: "Subtitle 1",
     phoneNumber: "07721573742",
-    image: "public/1.png",
+    image: "images/pages/1.png",
   },
   {
     id: 2,
     title: "Service 2",
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
-    image: "public/2.png",
+    image: "images/pages/2.png",
   },
   {
     id: 3,
     title: "Service 3",
     subtitle: "Subtitle 3",
     phoneNumber: "07721573742",
-    image: "public/3.png",
+    image: "images/pages/3.png",
   },
   {
     id: 4,
     title: "Service 4",
     subtitle: "Subtitle 4",
     phoneNumber: "07721573742",
-    image: "public/5.jpg",
+    image: "images/pages/5.jpg",
   },
   {
     id: 5,
     title: "Service 5",
     subtitle: "Subtitle 5",
     phoneNumber: "07721573742",
-    image: "public/2.png",
+    image: "images/pages/6.jpg",
   },
   {
     id: 6,
     title: "Service 6",
     subtitle: "Subtitle 6",
     phoneNumber: "07721573742",
-    image: "public/6.png",
+    image: "images/pages/3.png",
   },
   {
     id: 7,
     title: "Service 7",
     subtitle: "Subtitle 7",
     phoneNumber: "07721573742",
-    image: "public/1.png",
+    image: "images/pages/1.png",
   },
   {
     id: 8,
     title: "Service 8",
     subtitle: "Subtitle 8",
     phoneNumber: "07721573742",
-    image: "public/6.png",
+    image: "images/pages/5.jpg",
   },
 ]);
 
@@ -471,58 +511,20 @@ const newService: any = ref({
   subtitle: "",
   phoneNumber: "",
   image: "",
+  imagePreview: null,
 });
-
-const paginatedGridItems = computed(() => {
-  const sourceItems = filteredItems.value.length
-    ? filteredItems.value
-    : items.value;
-  const startIndex = (gridCurrentPage.value - 1) * itemsPerPage.value;
-  const endIndex = startIndex + itemsPerPage.value;
-  return sourceItems.slice(startIndex, endIndex);
-});
-
-const paginatedListItems = computed(() => {
-  const sourceItems = filteredItems.value.length
-    ? filteredItems.value
-    : items.value;
-  const startIndex = (listCurrentPage.value - 1) * itemsPerPage.value;
-  const endIndex = startIndex + itemsPerPage.value;
-  return sourceItems.slice(startIndex, endIndex);
-});
-
-const openAddServiceDialog = () => {
-  addServiceDialogVisible.value = true;
-};
-
-const saveNewService = (): any => {
-  if (
-    newService.value.title &&
-    newService.value.subtitle &&
-    newService.value.image &&
-    newService.value.phoneNumber
-  ) {
-    items.value = [...items.value, { ...newService.value, id: Date.now() }];
-    newService.value = { title: "", subtitle: "", phoneNumber: "", image: "" };
-    addServiceDialogVisible.value = false;
-    filterItems();
-  } else {
-    alert("please fill in full form to continue.");
-  }
-};
-
-const filterItems: any = (): any => {
+const filterItems: any = () => {
   if (!items.value || items.value.length === 0) {
     filteredItems.value = [];
-    return filterItems;
+    return;
   }
-  filteredItems.value = items.value.filter((item) => {
+
+  filteredItems.value = [...items.value].filter((item) => {
     const matchesSearchQuery =
       !searchQuery.value ||
       item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       item.subtitle.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       item.phoneNumber?.toString().includes(searchQuery.value);
-
     const matchesTitle =
       !filterTitle.value ||
       item.title.toLowerCase().includes(filterTitle.value.toLowerCase());
@@ -532,7 +534,6 @@ const filterItems: any = (): any => {
     const matchesPhoneNumber =
       !filterPhoneNumber.value ||
       item.phoneNumber?.toString().includes(filterPhoneNumber.value);
-
     return (
       matchesSearchQuery &&
       matchesTitle &&
@@ -540,15 +541,31 @@ const filterItems: any = (): any => {
       matchesPhoneNumber
     );
   });
-
-  // Reset current page to 1 if the filter is applied
   gridCurrentPage.value = 1;
   listCurrentPage.value = 1;
 };
 
-const showItemDetails: any = (item: any): any => {
-  selectedItem.value = item;
-  detailsDialogVisible.value = true;
+const paginatedGridItems = computed(() => {
+  const sourceItems = filteredItems.value.length
+    ? filteredItems.value
+    : items.value;
+  const startIndex = (gridCurrentPage.value - 1) * itemsPerPage.value;
+
+  return sourceItems.slice(startIndex, startIndex + itemsPerPage.value);
+});
+
+const paginatedListItems = computed(() => {
+  const sourceItems = filteredItems.value.length
+    ? filteredItems.value
+    : items.value;
+  const startIndex = (listCurrentPage.value - 1) * itemsPerPage.value;
+
+  return sourceItems.slice(startIndex, startIndex + itemsPerPage.value);
+});
+
+const openAddServiceDialog = () => {
+  newService.value = { title: "", subtitle: "", phoneNumber: "", image: "" };
+  addServiceDialogVisible.value = true;
 };
 
 const openDeleteDialog: any = (item: any): any => {
@@ -560,28 +577,92 @@ const openEditDialog: any = (item: any): any => {
   editItemTarget.value = { ...item };
   editDialogVisible.value = true;
 };
-
-const setView: any = (view: any): any => {
-  viewMode.value = view;
+const cancelAddService = () => {
+  addServiceDialogVisible.value = false;
+  newService.value = {
+    title: "",
+    subtitle: "",
+    phoneNumber: "",
+    image: "",
+    imagePreview: null,
+  };
+  imageError.value = "";
+};
+const cancelEdit = () => {
+  editItemTarget.value = {
+    id: null,
+    title: "",
+    subtitle: "",
+    phoneNumber: "",
+    image: "",
+  };
+  imageError.value = "";
+  editDialogVisible.value = false;
 };
 
-const deleteItem: any = (itemToDelete: any): any => {
-  items.value = items.value.filter((item) => item.id !== itemToDelete.id);
+const saveNewService = () => {
+  imageError.value = "";
+  if (
+    !newService.value.title?.trim() ||
+    !newService.value.subtitle?.trim() ||
+    !newService.value.phoneNumber?.trim()
+  ) {
+    alert("please fill in all fields.");
+    return;
+  }
+  if (!newService.value.image) {
+    imageError.value = "please select an image.";
+    return;
+  }
+  const newItem = {
+    id: generateId(),
+    title: newService.value.title.trim(),
+    subtitle: newService.value.subtitle.trim(),
+    phoneNumber: newService.value.phoneNumber.trim(),
+    image: newService.value.imagePreview,
+  };
 
-  deleteItemTarget.valueOf = null;
-  deleteDialogVisible.value = false;
+  items.value = [...items.value, { ...newItem }];
+
+  cancelAddService();
+
+  filterItems();
+};
+
+const showItemDetails: any = (item: any): any => {
+  selectedItem.value = item;
+  detailsDialogVisible.value = true;
 };
 
 const saveEdit = () => {
+  if (
+    !editItemTarget.value.title?.trim() ||
+    !editItemTarget.value.subtitle?.trim() ||
+    !editItemTarget.value.phoneNumber?.trim()
+  ) {
+    alert("please fill in all required fields.");
+    return;
+  }
   isSaving.value = true;
+
   setTimeout(() => {
     const index = items.value.findIndex(
-      (i) => i.id === editItemTarget.value.id
+      (item) => item.id === editItemTarget.value.id
     );
-    if (index !== -1) {
-      items.value[index] = { ...editItemTarget.value };
 
-      items.value = [...items.value];
+    if (index !== -1) {
+      const updatedItem = {
+        ...editItemTarget.value,
+        title: editItemTarget.value.title.trim(),
+        subtitle: editItemTarget.value.subtitle.trim(),
+        phoneNumber: editItemTarget.value.phoneNumber.trim(),
+      };
+      items.value = [
+        ...items.value.slice(0, index),
+        updatedItem,
+        ...items.value.slice(index + 1),
+      ];
+      filterItems();
     }
 
     editDialogVisible.value = false;
@@ -589,15 +670,63 @@ const saveEdit = () => {
   }, 1000);
 };
 
-const handleImageUpload = (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      newService.value.image = reader.result; // Store the data URL
-    };
-    reader.readAsDataURL(file); // Read the file as a data URL
+const deleteItem: any = (itemToDelete: any): any => {
+  items.value = items.value.filter((item) => item.id !== itemToDelete.id);
+
+  deleteItemTarget.valueOf = null;
+  deleteDialogVisible.value = false;
+  filterItems();
+};
+
+const handleImageUpload = (event: Event, mode: "add" | "edit") => {
+  const fileInput = event.target as HTMLInputElement;
+  const file = fileInput.files?.[0];
+  imageError.value = "";
+
+  if (!file) {
+    imageError.value = "please select an image.";
+    if (mode === "add") {
+      newService.value.imagePreview = null;
+    } else {
+      editItemTarget.value = "";
+    }
+
+    return;
   }
+
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (file.size > maxSize) {
+    imageError.value = "Image size should be less than 5MB.";
+    fileInput.value = "";
+    if (mode === "add") {
+      newService.value.imagePreview = null;
+    } else {
+      editItemTarget.value.image = "";
+    }
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    const imageResult = e.target?.result as string;
+    if (mode === "add") {
+      newService.value.imagePreview = imageResult;
+      newService.value.image = file;
+    } else {
+      editItemTarget.value.image = imageResult;
+    }
+  };
+  reader.onerror = () => {
+    imageError.value = "error reading file";
+    if (mode === "add") {
+      imagePreview.value = null;
+    } else {
+      editItemTarget.value.image = "";
+    }
+  };
+
+  reader.readAsDataURL(file);
 };
 watch([filterTitle, filterSubtitle, filterPhoneNumber, searchQuery], () => {
   gridCurrentPage.value = 1;
@@ -613,4 +742,11 @@ const resetFilters: any = (): any => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.preview-image {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  margin-top: 10px;
+}
+</style>
