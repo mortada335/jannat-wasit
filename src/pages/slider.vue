@@ -4,7 +4,7 @@
     <!-- Header with Add New Slider Button -->
     <VCard height="80px" class="pa-5">
       <VRow justify="left">
-        <VCol cols="12" md="10" sm="4">
+        <VCol cols="12" md="12" sm="3" class="text-left">
           <VBtn color="success" @click="openAddSliderDialog">Add New Slider</VBtn>
         </VCol>
       </VRow>
@@ -13,11 +13,13 @@
     <!-- List of Sliderhips -->
     <VRow no-gutters>
       <VCol cols="12" md="6" sm="8" lg="4" class="mt-4" v-for="item in sliders" :key="item.id">
-        <VCard class="card-style fixed-card mb-4" @click="showSliderDetails(item)">
+        <VCard class="card-style mb-4" @click="showSliderDetails(item)">
           <VRow>
-            <VCol cols="12">
-              <img class="fixed-img" :src="item.img" alt="img view" />
+            <VCol>
+              <img class="card-image" :src="item.img" alt="img view" />
             </VCol>
+          </VRow>
+          <VRow dense>
             <VCol cols="12" class="action-buttons">
               Actions:
               <VBtn @click.stop="openEditDialog(item)" variant="plain" color="success">
@@ -84,7 +86,7 @@
         <VCardTitle>{{ t("Confirm Deletion") }}</VCardTitle>
         <VCardText>Are you sure you want to delete this Slider?</VCardText>
         <VCardActions>
-          <VBtn @click="confirmDeleteSlider" color="error">Delete</VBtn>
+          <VBtn @click="deleteSlider" color="error">Delete</VBtn>
           <VBtn @click="deleteSliderDialogVisible = false" color="success">Cancel</VBtn>
         </VCardActions>
       </VCard>
@@ -198,7 +200,7 @@ const showSliderDetails = (item: any) => {
   showSliderDialogVisible.value = true;
 };
 
-const confirmDeleteSlider = () => {
+const deleteSlider = () => {
   sliders.value = sliders.value.filter(
     (i) => i.id !== deleteItemTarget.value.id
   );
@@ -207,7 +209,7 @@ const confirmDeleteSlider = () => {
 </script>
 <style>
 .card-style {
-  width: 400px;
+  width: 440px;
   height: 350px;
   display: flex;
   flex-direction: column;
@@ -215,28 +217,27 @@ const confirmDeleteSlider = () => {
   padding: 16px;
 }
 
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
 .action-buttons {
   display: flex;
   align-items: center;
   gap: 8px;
+
+
 }
 
-.fixed-card {
-  width: 250px;
-  /* Adjust width as needed */
-  height: 400px;
-  /* Set a fixed height for the card */
-  display: flex;
-  object-fit: contain;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-
-.action-buttons {
-  display: flex;
-  justify-content: space-around;
+.preview-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 16px;
   align-items: center;
-  padding-top: 15px;
 }
 </style>

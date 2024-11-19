@@ -4,21 +4,11 @@
     <VCard class="pa-5 mb-3">
       <VRow align="center">
         <VCol cols="12" md="3" sm="4">
-          <VTextField
-            v-model="searchQuery"
-            single-line
-            label="Search"
-            clearable
-            @input="filterItems"
-            color="success"
-          />
+          <VTextField v-model="searchQuery" single-line label="Search" clearable @input="filterItems" color="success" />
         </VCol>
 
         <VCol cols="12" md="3" sm="2">
-          <VBtn
-            @click="isFilterMenuOpen = !isFilterMenuOpen"
-            :color="isFilterMenuOpen ? 'success' : 'dark'"
-          >
+          <VBtn @click="isFilterMenuOpen = !isFilterMenuOpen" :color="isFilterMenuOpen ? 'success' : 'dark'">
             <VIcon size="x-large" icon="mdi-filter-outline" />
           </VBtn>
         </VCol>
@@ -34,10 +24,8 @@
         </VCard>
 
         <VCol cols="12" md="3" sm="3">
-          <VBtn color="success" outlined @click="openAddServiceDialog"
-            >Add New Service</VBtn
-          ></VCol
-        >
+          <VBtn color="success" outlined @click="openAddServiceDialog">Add New Service</VBtn>
+        </VCol>
       </VRow>
     </VCard>
 
@@ -53,31 +41,14 @@
           </VListItemTitle>
           <VRow class="ma-1">
             <VCol cols="12" md="6" sm="6">
-              <VTextField
-                v-model="filterTitle"
-                color="success"
-                label="Title"
-                clearable
-                @input="filterItems"
-              />
+              <VTextField v-model="filterTitle" color="success" label="Title" clearable @input="filterItems" />
             </VCol>
             <VCol cols="12" md="6" sm="6">
-              <VTextField
-                v-model="filterSubtitle"
-                color="success"
-                label="Subtitle"
-                clearable
-                @input="filterItems"
-              />
+              <VTextField v-model="filterSubtitle" color="success" label="Subtitle" clearable @input="filterItems" />
             </VCol>
             <VCol cols="12" md="4" sm="4">
-              <VTextField
-                v-model="filterPhoneNumber"
-                color="success"
-                label="Phone Number"
-                clearable
-                @input="filterItems"
-              />
+              <VTextField v-model="filterPhoneNumber" color="success" label="Phone Number" clearable
+                @input="filterItems" />
             </VCol>
           </VRow>
         </VList>
@@ -97,11 +68,7 @@
           </tr>
         </thead>
       </VTable>
-      <VCard
-        v-for="item in paginatedListItems"
-        :key="item.id"
-        @click="showItemDetails(item)"
-      >
+      <VCard v-for="item in paginatedListItems" :key="item.id" @click="showItemDetails(item)">
         <VTable class="pa-2" min-height="300px">
           <tbody>
             <tr class="cursor-pointer">
@@ -110,37 +77,23 @@
               </td>
               <td>{{ item.subtitle }}</td>
               <td>
-                <img
-                  style="width: 100px; height: 50px"
-                  alt="img view"
-                  :src="item.image"
-                />
+                <img style="width: 100px; height: 50px" alt="img view" :src="item.image" />
               </td>
               <td class="text-center">{{ item.phoneNumber }}</td>
               <td>
                 <VRow no-gutters class="text-left">
                   <VCol cols="6">
-                    <VBtn
-                      @click.stop="openDeleteDialog(item)"
-                      variant="plain"
-                      color="#eb2224"
-                    >
-                      <v-tooltip activator="parent" location="top"
-                        >Delete</v-tooltip
-                      >
+                    <VBtn @click.stop="openDeleteDialog(item)" variant="plain" color="#eb2224">
+                      <v-tooltip activator="parent" location="top">Delete</v-tooltip>
                       <VIcon size="x-large" icon="mdi-trash-can" />
                     </VBtn>
                   </VCol>
-                  <VCol cols="2"
-                    ><VBtn @click.stop="openEditDialog(item)" variant="plain">
-                      <v-tooltip activator="parent" location="top"
-                        >Edit</v-tooltip
-                      >
-                      <VIcon
-                        size="x-large"
-                        icon="mdi-square-edit-outline"
-                      /> </VBtn
-                  ></VCol>
+                  <VCol cols="2">
+                    <VBtn @click.stop="openEditDialog(item)" variant="plain">
+                      <v-tooltip activator="parent" location="top">Edit</v-tooltip>
+                      <VIcon size="x-large" icon="mdi-square-edit-outline" />
+                    </VBtn>
+                  </VCol>
                 </VRow>
               </td>
             </tr>
@@ -148,102 +101,66 @@
         </VTable>
         <VDivider></VDivider>
       </VCard>
-      <VPagination
-        v-model="listCurrentPage"
-        :length="Math.ceil(filteredItems.length / itemsPerPage)"
-        color="primary"
-      />
+      <VPagination v-model="listCurrentPage" :length="Math.ceil(filteredItems.length / itemsPerPage)" color="primary" />
     </div>
 
     <!-- grid view -->
 
     <div v-if="viewMode === 'grid'">
       <VRow>
-        <VCol
-          cols="12"
-          md="4"
-          sm="4"
-          class="table-container"
-          v-for="item in paginatedGridItems.length ? paginatedGridItems : items"
-          :key="item.id"
-        >
+        <VCol cols="12" md="4" sm="4" class="table-container"
+          v-for="item in paginatedGridItems.length ? paginatedGridItems : items" :key="item.id">
           <VCard class="pa-3" @click="showItemDetails(item)">
             <VRow>
               <VCol cols="12">
                 <p align="left" class="mb-3">
-                  <strong>Title: </strong
-                  ><span
-                    style="
+                  <strong>Title: </strong><span style="
                       background-color: rgb(60, 60, 90);
                       padding: 3px;
                       border-radius: 15%;
-                    "
-                    >&nbsp;{{ item.title }}</span
-                  >
+                    ">&nbsp;{{ item.title }}</span>
                 </p>
 
                 <p align="left" class="mb-3">
-                  <strong>Subtitle: </strong
-                  ><span
-                    style="
+                  <strong>Subtitle: </strong><span style="
                       background-color: rgb(60, 60, 90);
                       padding: 3px;
                       border-radius: 15%;
-                    "
-                  >
-                    &nbsp; {{ item.subtitle }}</span
-                  >
+                    ">
+                    &nbsp; {{ item.subtitle }}</span>
                 </p>
                 <p align="left" class="mb-3">
-                  <strong>Phone Number: </strong
-                  ><span
-                    style="
+                  <strong>Phone Number: </strong><span style="
                       background-color: rgb(60, 60, 90);
                       padding: 3px;
                       border-radius: 15%;
-                    "
-                    >&nbsp;{{ item.phoneNumber }}</span
-                  >
+                    ">&nbsp;{{ item.phoneNumber }}</span>
                 </p>
                 <p align="left" class="mt-2">
-                  <span
-                    style="
+                  <span style="
                       background-color: rgb(60, 60, 90);
                       padding: 2px 8px;
                       margin-left: 1rem;
                       border-radius: 15%;
-                    "
-                    >&NonBreakingSpace;</span
-                  >
+                    ">&NonBreakingSpace;</span>
                   <strong>:Image</strong>
                 </p>
                 <VCol align="left" cols="12">
-                  <img
-                    :src="item.image"
-                    style="
+                  <img :src="item.image" style="
                       width: 90px;
                       height: 70px;
                       object-fit: contain;
                       border-radius: 15px;
-                    "
-                  />
+                    " />
                 </VCol>
               </VCol>
             </VRow>
             <VRow justify="end" dense class="flex items-center">
-              <VBtn
-                @click.stop="openEditDialog(item)"
-                variant="plain"
-                color="primary"
-              >
+              <VBtn @click.stop="openEditDialog(item)" variant="plain" color="primary">
                 <VTooltip activator="parent" location="top">Edit</VTooltip>
                 <VIcon size="x-large" icon="mdi-pencil" />
               </VBtn>
-              <VBtn
-                @click.stop="openDeleteDialog(item)"
-                variant="plain"
-                color="error"
-              >
+              <VBtn @click.stop="openDeleteDialog(item)" variant="plain" color="error">
                 <VTooltip activator="parent" location="top">Delete</VTooltip>
                 <VIcon size="x-large" icon="mdi-delete" />
               </VBtn>
@@ -251,17 +168,10 @@
           </VCard>
         </VCol>
       </VRow>
-      <VPagination
-        v-model="gridCurrentPage"
-        :length="
-          Math.ceil(
-            paginatedListItems.length
-              ? paginatedListItems
-              : items.length / itemsPerPage
-          )
-        "
-        color="primary"
-      />
+      <VPagination v-model="gridCurrentPage" :length="Math.ceil(
+        paginatedListItems.length ? paginatedListItems : items.length / itemsPerPage
+      )
+        " color="primary" />
     </div>
 
     <!-- add new service dialog -->
@@ -271,53 +181,26 @@
         <VCardTitle>Add New Service</VCardTitle>
         <VCardText class="text-center">
           <VCol class="text-center" cols="12" lg="12" md="8">
-            <VTextField
-              required
-              class="mb-3"
-              label="Title"
-              v-model="newService.title"
-            />
-            <VTextField
-              required
-              class="mb-3"
-              label="Subtitle"
-              v-model="newService.subtitle"
-            />
-            <VTextField
-              required
-              label="Phone Number"
-              v-model="newService.phoneNumber"
-            />
-            <VFileInput
-              required
-              class="mt-3"
-              label="Image"
-              v-model="newService.image"
-              accept="image/*"
-              @change="(e:any)=>handleImageUpload(e,'add')"
-              :error-messages="imageError"
-              prepend-icon="mdi-camera"
-            />
+            <VTextField required class="mb-3" label="Title" v-model="newService.title" />
+            <VTextField required class="mb-3" label="Subtitle" v-model="newService.subtitle" />
+            <VTextField required label="Phone Number" v-model="newService.phoneNumber" />
+            <VFileInput required class="mt-3" label="Image" v-model="newService.image" accept="image/*"
+              @change="(e: any) => handleImageUpload(e, 'add')" :error-messages="imageError"
+              prepend-icon="mdi-camera" />
 
             <div v-if="newService.imagePreview" class="mt-3">
               <p class="mb-2">Preview</p>
-              <img
-                :src="newService.imagePreview"
-                alt="Preview"
-                style="
+              <img :src="newService.imagePreview" alt="Preview" style="
                   max-width: 200px;
                   max-height: 150px;
                   object-fit: contain;
                   border-radius: 4px;
-                "
-              />
+                " />
             </div>
           </VCol>
         </VCardText>
         <VCardActions>
-          <VBtn color="error" @click="addServiceDialogVisible = false"
-            >Cancel</VBtn
-          >
+          <VBtn color="error" @click="addServiceDialogVisible = false">Cancel</VBtn>
           <VBtn color="success" @click="saveNewService">Save</VBtn>
         </VCardActions>
       </VCard>
@@ -334,9 +217,7 @@
           <img :src="selectedItem.image" width="200" />
         </VCardText>
         <VCardActions>
-          <VBtn color="primary" @click="detailsDialogVisible = false"
-            >Close</VBtn
-          >
+          <VBtn color="primary" @click="detailsDialogVisible = false">Close</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>
@@ -349,9 +230,7 @@
           Are you sure you want to delete "{{ deleteItemTarget.title }}"?
         </VCardText>
         <VCardActions>
-          <VBtn color="error" text @click="deleteItem(deleteItemTarget)"
-            >Delete</VBtn
-          >
+          <VBtn color="error" text @click="deleteItem(deleteItemTarget)">Delete</VBtn>
           <VBtn text @click="deleteDialogVisible = false">Cancel</VBtn>
         </VCardActions>
       </VCard>
@@ -362,44 +241,21 @@
       <VCard class="mx-auto" width="440px">
         <VCardTitle>Edit Item</VCardTitle>
         <CardText>
-          <VCol class="text-center" cols="12" lg="12" md="8"
-            ><VTextField
-              class="mb-4"
-              label="Title"
-              v-model="editItemTarget.title"
-              required
-            ></VTextField>
-            <VTextField
-              label="Subtitle"
-              v-model="editItemTarget.subtitle"
-              required
-            ></VTextField>
-            <VTextField
-              label="Phone Number"
-              class="mt-4"
-              v-model="editItemTarget.phoneNumber"
-              required
-            ></VTextField>
-            <VFileInput
-              class="mt-3"
-              label="Image"
-              accept="image/*"
-              @change="(e:any) => handleImageUpload(e, 'edit')"
-            />
+          <VCol class="text-center" cols="12" lg="12" md="8">
+            <VTextField class="mb-4" label="Title" v-model="editItemTarget.title" required></VTextField>
+            <VTextField label="Subtitle" v-model="editItemTarget.subtitle" required></VTextField>
+            <VTextField label="Phone Number" class="mt-4" v-model="editItemTarget.phoneNumber" required></VTextField>
+            <VFileInput class="mt-3" label="Image" accept="image/*"
+              @change="(e: any) => handleImageUpload(e, 'edit')" />
             <div v-if="editItemTarget.image" class="mt-3">
-              <img
-                :src="editItemTarget.image"
-                alt="Preview"
-                style="max-width: 200px; max-height: 150px; object-fit: contain"
-              />
+              <img :src="editItemTarget.image" alt="Preview"
+                style="max-width: 200px; max-height: 150px; object-fit: contain" />
             </div>
           </VCol>
         </CardText>
         <VCardActions>
           <VBtn color="error" @click="cancelEdit">Cancel</VBtn>
-          <VBtn color="success" @click="saveEdit" :loading="isSaving"
-            >Save</VBtn
-          >
+          <VBtn color="success" @click="saveEdit" :loading="isSaving">Save</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>
@@ -534,30 +390,21 @@ const filterItems: any = () => {
     const matchesPhoneNumber =
       !filterPhoneNumber.value ||
       item.phoneNumber?.toString().includes(filterPhoneNumber.value);
-    return (
-      matchesSearchQuery &&
-      matchesTitle &&
-      matchesSubtitle &&
-      matchesPhoneNumber
-    );
+    return matchesSearchQuery && matchesTitle && matchesSubtitle && matchesPhoneNumber;
   });
   gridCurrentPage.value = 1;
   listCurrentPage.value = 1;
 };
 
 const paginatedGridItems = computed(() => {
-  const sourceItems = filteredItems.value.length
-    ? filteredItems.value
-    : items.value;
+  const sourceItems = filteredItems.value.length ? filteredItems.value : items.value;
   const startIndex = (gridCurrentPage.value - 1) * itemsPerPage.value;
 
   return sourceItems.slice(startIndex, startIndex + itemsPerPage.value);
 });
 
 const paginatedListItems = computed(() => {
-  const sourceItems = filteredItems.value.length
-    ? filteredItems.value
-    : items.value;
+  const sourceItems = filteredItems.value.length ? filteredItems.value : items.value;
   const startIndex = (listCurrentPage.value - 1) * itemsPerPage.value;
 
   return sourceItems.slice(startIndex, startIndex + itemsPerPage.value);
@@ -646,9 +493,7 @@ const saveEdit = () => {
   isSaving.value = true;
 
   setTimeout(() => {
-    const index = items.value.findIndex(
-      (item) => item.id === editItemTarget.value.id
-    );
+    const index = items.value.findIndex((item) => item.id === editItemTarget.value.id);
 
     if (index !== -1) {
       const updatedItem = {
