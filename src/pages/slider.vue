@@ -1,48 +1,32 @@
+// must edit img
 <template>
   <div>
     <!-- Header with Add New Slider Button -->
     <VCard height="80px" class="pa-5">
       <VRow justify="left">
         <VCol cols="12" md="10" sm="4">
-          <VBtn color="success" @click="openAddSliderDialog"
-            >Add New Slider</VBtn
-          >
+          <VBtn color="success" @click="openAddSliderDialog">Add New Slider</VBtn>
         </VCol>
       </VRow>
     </VCard>
 
     <!-- List of Sliderhips -->
     <VRow no-gutters>
-      <VCol cols="12" md="4" sm="8" class="mt-4">
-        <VCard
-          class="card-style"
-          @click="showSliderDetails(item)"
-          v-for="item in sliders"
-          :key="item.id"
-        >
-          <VRow dense>
-            <VCol>
-              <img :src="item.img" alt="img viewing" />
+      <VCol cols="12" md="6" sm="8" lg="4" class="mt-4" v-for="item in sliders" :key="item.id">
+        <VCard class="card-style fixed-card mb-4" @click="showSliderDetails(item)">
+          <VRow>
+            <VCol cols="12">
+              <img class="fixed-img" :src="item.img" alt="img view" />
             </VCol>
-            <!-- </VRow> -->
-            <!-- <VRow dense> -->
             <VCol cols="12" class="action-buttons">
               Actions:
-              <VBtn
-                @click.stop="openEditDialog(item)"
-                variant="plain"
-                color="primary"
-              >
+              <VBtn @click.stop="openEditDialog(item)" variant="plain" color="success">
                 <VTooltip activator="parent" location="top">Edit</VTooltip>
-                <VIcon size="large" icon="mdi-pencil" />
+                <VIcon size="x-large" icon="mdi-pencil" />
               </VBtn>
-              <VBtn
-                @click.stop="openDeleteDialog(item)"
-                variant="plain"
-                color="error"
-              >
+              <VBtn @click.stop="openDeleteDialog(item)" variant="plain" color="error">
                 <VTooltip activator="parent" location="top">Delete</VTooltip>
-                <VIcon size="large" icon="mdi-delete" />
+                <VIcon size="x-large" icon="mdi-delete" />
               </VBtn>
             </VCol>
           </VRow>
@@ -54,17 +38,11 @@
       <VCard class="mx-auto" width="440px">
         <VCardTitle>Add New Slider</VCardTitle>
         <VCardText class="text-center">
-          <VFileInput
-            v-model="newSlider.img"
-            clearable
-            label="Picture."
-            accept="image/*"
-          />
+          <VFileInput @change="handleNewSliderImage" v-model="newSlider.img" clearable label="Picture."
+            accept="image/*" />
         </VCardText>
         <VCardActions>
-          <VBtn @click="addSliderDialogVisible = false" color="error"
-            >Cancel</VBtn
-          >
+          <VBtn @click="addSliderDialogVisible = false" color="error">Cancel</VBtn>
           <VBtn @click="saveNewSlider" color="success">Save</VBtn>
         </VCardActions>
       </VCard>
@@ -76,29 +54,14 @@
         <VCardTitle>Edit Slider</VCardTitle>
 
         <VCardText class="text-center">
-          <VFileInput
-            clearable
-            label="Picture"
-            class="my-3"
-            accept="image/*"
-            @change="handleImageUpload"
-          />
+          <VFileInput clearable label="Picture" class="my-3" accept="image/*" @change="handleEditedSliderImage" />
           <!-- Preview the uploaded image -->
-          <img
-            v-if="editSliderTarget.img"
-            :src="editSliderTarget.img"
-            alt="Preview"
-            class="preview-image"
-          />
+          <img v-if="editSliderTarget.img" :src="editSliderTarget.img" alt="Preview" class="preview-image" />
         </VCardText>
 
         <VCardActions>
-          <VBtn @click="editSliderDialogVisible = false" color="error"
-            >Cancel</VBtn
-          >
-          <VBtn :loading="isSaving" @click="saveEditedSlider" color="success"
-            >Save</VBtn
-          >
+          <VBtn @click="editSliderDialogVisible = false" color="error">Cancel</VBtn>
+          <VBtn :loading="isSaving" @click="saveEditedSlider" color="success">Save</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>
@@ -110,9 +73,7 @@
           <img :src="selectedItem.img" />
         </VCardText>
         <VCardActions>
-          <VBtn @click="showSliderDialogVisible = false" color="success"
-            >Close</VBtn
-          >
+          <VBtn @click="showSliderDialogVisible = false" color="success">Close</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>
@@ -124,9 +85,7 @@
         <VCardText>Are you sure you want to delete this Slider?</VCardText>
         <VCardActions>
           <VBtn @click="confirmDeleteSlider" color="error">Delete</VBtn>
-          <VBtn @click="deleteSliderDialogVisible = false" color="success"
-            >Cancel</VBtn
-          >
+          <VBtn @click="deleteSliderDialogVisible = false" color="success">Cancel</VBtn>
         </VCardActions>
       </VCard>
     </VDialog>
@@ -146,9 +105,9 @@ const showSliderDialogVisible = ref(false);
 const deleteSliderDialogVisible = ref(false);
 
 const isSaving = ref(false);
-const newSlider: any = ref({ img: "" });
+const newSlider: any = ref({ id: null, img: "" });
 const selectedItem: any = ref();
-let editSliderTarget: any = ref({
+const editSliderTarget: any = ref({
   id: null,
   img: "",
 });
@@ -157,9 +116,9 @@ const { t } = useI18n();
 
 const sliders = ref([
   { id: 1, img: "images/pages/5.jpg" },
-  { id: 2, img: "/public/images/pages/1.png" },
-  { id: 3, img: "/public/images/pages/1.png" },
-  { id: 4, img: "/public/images/pages/3.png" },
+  { id: 2, img: "images/pages/1.png" },
+  { id: 3, img: "images/pages/2.png" },
+  { id: 4, img: "images/pages/3.png" },
 ]);
 
 const openAddSliderDialog = () => {
@@ -177,15 +136,23 @@ const openEditDialog = (item: any) => {
 };
 const saveNewSlider = () => {
   if (newSlider.value.img) {
-    sliders.value = [...sliders.value, { ...newSlider.value, id: Date.now() }];
+    isSaving.value = true;
+    sliders.value.push({
+      id: Date.now(),
+      img: newSlider.value.img
+    });
     newSlider.value.img = "";
     addSliderDialogVisible.value = false;
+    isSaving.value = false;
   } else {
     alert("Please select an image to continue.");
   }
 };
 
 const saveEditedSlider = () => {
+  if (!editSliderTarget.value.img) {
+    alert("Please select an image to continue.");
+  }
   isSaving.value = true;
   setTimeout(() => {
     const index = sliders.value.findIndex(
@@ -199,17 +166,30 @@ const saveEditedSlider = () => {
   }, 1000);
 };
 
-const handleImageUpload = (event: Event) => {
+const handleEditedSliderImage = (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        // Assign the data URL to editSliderTarget.img for preview and editing
         editSliderTarget.value.img = reader.result;
       }
     };
-    reader.readAsDataURL(file); // Read the file as a data URL
+    reader.readAsDataURL(file);
+  }
+}
+
+const handleNewSliderImage = (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      newSlider.value.img = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+  else {
+    alert("Please select an image to continue.");
   }
 };
 
@@ -228,7 +208,7 @@ const confirmDeleteSlider = () => {
 <style>
 .card-style {
   width: 400px;
-  height: 330px;
+  height: 350px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -238,6 +218,25 @@ const confirmDeleteSlider = () => {
 .action-buttons {
   display: flex;
   align-items: center;
-  gap: 8px; /* Adds space between the buttons */
+  gap: 8px;
+}
+
+.fixed-card {
+  width: 250px;
+  /* Adjust width as needed */
+  height: 400px;
+  /* Set a fixed height for the card */
+  display: flex;
+  object-fit: contain;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.action-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 15px;
 }
 </style>
