@@ -466,7 +466,7 @@ const saveNewService = () => {
     return;
   }
   if (!newService.value.image) {
-    imageError.value = "please select an image.";
+    alert("please select an image.");
     return;
   }
   const newItem = {
