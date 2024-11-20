@@ -1,4 +1,4 @@
-// must edit img
+// must edit image
 <template>
   <div>
     <!-- Header with Add New Slider Button -->
@@ -12,11 +12,19 @@
 
     <!-- List of Sliderhips -->
     <VRow no-gutters>
-      <VCol cols="12" md="6" sm="8" lg="4" class="mt-4" v-for="item in sliders" :key="item.id">
+      <VCol
+        cols="12"
+        md="6"
+        sm="8"
+        lg="4"
+        class="mt-4"
+        v-for="item in sliders"
+        :key="item.id"
+      >
         <VCard class="card-style mb-4" @click="showSliderDetails(item)">
           <VRow>
             <VCol>
-              <img class="card-image" :src="item.img" alt="img view" />
+              <img class="card-image" :src="item.image" alt="image view" />
             </VCol>
           </VRow>
           <VRow dense>
@@ -40,8 +48,13 @@
       <VCard class="mx-auto" width="440px">
         <VCardTitle>Add New Slider</VCardTitle>
         <VCardText class="text-center">
-          <VFileInput @change="handleNewSliderImage" v-model="newSlider.img" clearable label="Picture."
-            accept="image/*" />
+          <VFileInput
+            @change="handleNewSliderImage"
+            v-model="newSlider.image"
+            clearable
+            label="Picture."
+            accept="image/*"
+          />
         </VCardText>
         <VCardActions>
           <VBtn @click="addSliderDialogVisible = false" color="error">Cancel</VBtn>
@@ -56,9 +69,20 @@
         <VCardTitle>Edit Slider</VCardTitle>
 
         <VCardText class="text-center">
-          <VFileInput clearable label="Picture" class="my-3" accept="image/*" @change="handleEditedSliderImage" />
+          <VFileInput
+            clearable
+            label="Picture"
+            class="my-3"
+            accept="image/*"
+            @change="handleEditedSliderImage"
+          />
           <!-- Preview the uploaded image -->
-          <img v-if="editSliderTarget.img" :src="editSliderTarget.img" alt="Preview" class="preview-image" />
+          <img
+            v-if="editSliderTarget.image"
+            :src="editSliderTarget.image"
+            alt="Preview"
+            class="preview-image"
+          />
         </VCardText>
 
         <VCardActions>
@@ -72,7 +96,7 @@
       <VCard class="mx-auto" width="400px">
         <VCardTitle>View Slider</VCardTitle>
         <VCardText>
-          <img :src="selectedItem.img" />
+          <img :src="selectedItem.image" />
         </VCardText>
         <VCardActions>
           <VBtn @click="showSliderDialogVisible = false" color="success">Close</VBtn>
@@ -107,20 +131,20 @@ const showSliderDialogVisible = ref(false);
 const deleteSliderDialogVisible = ref(false);
 
 const isSaving = ref(false);
-const newSlider: any = ref({ id: null, img: "" });
+const newSlider: any = ref({ id: null, image: "" });
 const selectedItem: any = ref();
 const editSliderTarget: any = ref({
   id: null,
-  img: "",
+  image: "",
 });
 const deleteItemTarget: any = ref();
 const { t } = useI18n();
 
 const sliders = ref([
-  { id: 1, img: "images/pages/5.jpg" },
-  { id: 2, img: "images/pages/1.png" },
-  { id: 3, img: "images/pages/2.png" },
-  { id: 4, img: "images/pages/3.png" },
+  { id: 1, image: "images/pages/5.jpg" },
+  { id: 2, image: "images/pages/1.png" },
+  { id: 3, image: "images/pages/2.png" },
+  { id: 4, image: "images/pages/3.png" },
 ]);
 
 const openAddSliderDialog = () => {
@@ -137,13 +161,13 @@ const openEditDialog = (item: any) => {
   editSliderDialogVisible.value = true;
 };
 const saveNewSlider = () => {
-  if (newSlider.value.img) {
+  if (newSlider.value.image) {
     isSaving.value = true;
     sliders.value.push({
       id: Date.now(),
-      img: newSlider.value.img
+      image: newSlider.value.image,
     });
-    newSlider.value.img = "";
+    newSlider.value.image = "";
     addSliderDialogVisible.value = false;
     isSaving.value = false;
   } else {
@@ -152,14 +176,12 @@ const saveNewSlider = () => {
 };
 
 const saveEditedSlider = () => {
-  if (!editSliderTarget.value.img) {
+  if (!editSliderTarget.value.image) {
     alert("Please select an image to continue.");
   }
   isSaving.value = true;
   setTimeout(() => {
-    const index = sliders.value.findIndex(
-      (i) => i.id === editSliderTarget.value.id
-    );
+    const index = sliders.value.findIndex((i) => i.id === editSliderTarget.value.id);
     if (index !== -1) {
       sliders.value[index] = { ...editSliderTarget.value };
     }
@@ -174,23 +196,22 @@ const handleEditedSliderImage = (event: Event) => {
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        editSliderTarget.value.img = reader.result;
+        editSliderTarget.value.image = reader.result;
       }
     };
     reader.readAsDataURL(file);
   }
-}
+};
 
 const handleNewSliderImage = (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = () => {
-      newSlider.value.img = reader.result as string;
+      newSlider.value.image = reader.result as string;
     };
     reader.readAsDataURL(file);
-  }
-  else {
+  } else {
     alert("Please select an image to continue.");
   }
 };
@@ -201,9 +222,7 @@ const showSliderDetails = (item: any) => {
 };
 
 const deleteSlider = () => {
-  sliders.value = sliders.value.filter(
-    (i) => i.id !== deleteItemTarget.value.id
-  );
+  sliders.value = sliders.value.filter((i) => i.id !== deleteItemTarget.value.id);
   deleteSliderDialogVisible.value = false;
 };
 </script>
@@ -228,8 +247,6 @@ const deleteSlider = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-
-
 }
 
 .preview-image {

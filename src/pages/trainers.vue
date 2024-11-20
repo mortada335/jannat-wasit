@@ -71,7 +71,7 @@
       <VCard v-for="item in paginatedListItems" :key="item.id" @click="showItemDetails(item)">
         <VTable class="pa-2" min-height="300px">
           <tbody>
-            <tr class="cursor-pointer">
+            <tr>
               <td>
                 {{ item.title }}
               </td>
@@ -101,15 +101,14 @@
         </VTable>
         <VDivider></VDivider>
       </VCard>
-      <VPagination v-model="listCurrentPage" :length="Math.ceil(filteredItems.length / itemsPerPage)" color="primary" />
+      <VPagination v-model="listCurrentPage" :length="totalListPages" :total-visible="5" />
     </div>
 
     <!-- grid view -->
 
     <div v-if="viewMode === 'grid'">
       <VRow>
-        <VCol cols="12" md="4" sm="4" class="table-container"
-          v-for="item in paginatedGridItems.length ? paginatedGridItems : items" :key="item.id">
+        <VCol cols="12" md="4" sm="4" lg="3" v-for="item in paginatedGridItems" :key="item.id">
           <VCard class="pa-3" @click="showItemDetails(item)">
             <VRow>
               <VCol cols="12">
@@ -145,14 +144,16 @@
                     ">&NonBreakingSpace;</span>
                   <strong>:Image</strong>
                 </p>
-                <VCol align="left" cols="12">
-                  <img :src="item.image" style="
-                      width: 90px;
-                      height: 70px;
-                      object-fit: contain;
-                      border-radius: 15px;
-                    " />
-                </VCol>
+                <VRow>
+                  <VCol cols="12">
+                    <img :src="item.image" style="
+                        width: 90px;
+                        height: 70px;
+                        object-fit: contain;
+                        border-radius: 15px;
+                      " />
+                  </VCol>
+                </VRow>
               </VCol>
             </VRow>
             <VRow justify="end" dense class="flex items-center">
@@ -168,10 +169,8 @@
           </VCard>
         </VCol>
       </VRow>
-      <VPagination v-model="gridCurrentPage" :length="Math.ceil(
-        paginatedListItems.length ? paginatedListItems : items.length / itemsPerPage
-      )
-        " color="primary" />
+      <VPagination v-model="gridCurrentPage" :length="totalGridPages" :total-visible="5" />
+
     </div>
 
     <!-- add new service dialog -->
@@ -208,13 +207,13 @@
 
     <!-- show details dialog -->
     <VDialog v-model="detailsDialogVisible">
-      <VCard class="mx-auto" width="450px">
+      <VCard class="mx-auto pa-2" width="450px">
         <VCardTitle>Item Details</VCardTitle>
         <VCardText>
           <p>Title: {{ selectedItem.title }}</p>
           <p>Subtitle: {{ selectedItem.subtitle }}</p>
           <p>phoneNumber: {{ selectedItem.phoneNumber }}</p>
-          <img :src="selectedItem.image" width="200" />
+          <img :src="selectedItem.image" style="width:200px; height:150px" />
         </VCardText>
         <VCardActions>
           <VBtn color="primary" @click="detailsDialogVisible = false">Close</VBtn>
@@ -227,7 +226,7 @@
       <VCard class="mx-auto" width="450px">
         <VCardTitle>Confirm Deletion</VCardTitle>
         <VCardText>
-          Are you sure you want to delete "{{ deleteItemTarget.title }}"?
+          ? Are you sure you want to delete "{{ deleteItemTarget.title }}"
         </VCardText>
         <VCardActions>
           <VBtn color="error" text @click="deleteItem(deleteItemTarget)">Delete</VBtn>
@@ -269,13 +268,11 @@ import { ref, watch, computed } from "vue";
 
 const searchQuery: any = ref("");
 const viewMode: any = ref("list");
-
 const filteredItems: any = ref([]);
 const isFilterMenuOpen: any = ref(false);
 const filterTitle: any = ref("");
 const filterSubtitle: any = ref("");
 const filterPhoneNumber: any = ref("");
-
 const selectedItem: any = ref(null);
 const deleteItemTarget: any = ref(null);
 const editItemTarget: any = ref({
@@ -291,17 +288,23 @@ const deleteDialogVisible: any = ref(false);
 const editDialogVisible: any = ref(false);
 const addServiceDialogVisible: any = ref(false);
 
-const imageError = ref("");
-const imagePreview: any = ref<string | null>(null);
-
-const generateId = () =>
-  items.value.length ? Math.max(...items.value.map((item) => item.id)) + 1 : 1;
-
 const isSaving = ref(false);
+
 
 const itemsPerPage = ref(5);
 const gridCurrentPage = ref(1);
 const listCurrentPage = ref(1);
+const imageError = ref("");
+const imagePreview: any = ref<string | null>(null);
+
+const totalListPages = computed(() =>
+  Math.ceil(filteredItems.value.length / itemsPerPage.value)
+);
+const totalGridPages = computed(() =>
+  Math.ceil((filteredItems.value.length || items.value.length) / itemsPerPage.value)
+);
+const generateId = () =>
+  items.value.length ? Math.max(...items.value.map((item) => item.id)) + 1 : 1;
 
 const items = ref([
   {
@@ -396,6 +399,10 @@ const filterItems: any = () => {
   listCurrentPage.value = 1;
 };
 
+onMounted(() => {
+  filterItems();
+})
+
 const paginatedGridItems = computed(() => {
   const sourceItems = filteredItems.value.length ? filteredItems.value : items.value;
   const startIndex = (gridCurrentPage.value - 1) * itemsPerPage.value;
@@ -442,6 +449,7 @@ const cancelEdit = () => {
     subtitle: "",
     phoneNumber: "",
     image: "",
+    imagePreview: null,
   };
   imageError.value = "";
   editDialogVisible.value = false;
@@ -493,7 +501,7 @@ const saveEdit = () => {
   isSaving.value = true;
 
   setTimeout(() => {
-    const index = items.value.findIndex((item) => item.id === editItemTarget.value.id);
+    const index = items.value.findIndex((i) => i.id === editItemTarget.value.id);
 
     if (index !== -1) {
       const updatedItem = {
