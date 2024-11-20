@@ -223,7 +223,7 @@
     <!-- delete dialog -->
     <VDialog v-model="deleteDialogVisible">
       <VCard class="mx-auto" width="450px">
-        <VCardTitle>t(Confirm Deletion)</VCardTitle>
+        <VCardTitle>Confirm Deletion</VCardTitle>
         <VCardText class="text-left">
           ? Are you sure you want to delete this Project
         </VCardText>
@@ -266,12 +266,16 @@ import { ref, watch, computed } from "vue";
 const searchQuery: any = ref("");
 const viewMode: any = ref("list");
 
+import i18n from "@/plugins/i18n";
+
 const isFilterMenuOpen: any = ref(false);
 const filteredItems: any = ref([]);
 const filterTitle: any = ref("");
 const filterSubtitle: any = ref("");
 const filterPhoneNumber: any = ref("");
 const filterDate: any = ref("");
+
+const t = i18n;
 
 const selectedItem: any = ref(null);
 const deleteItemTarget: any = ref(null);
@@ -515,7 +519,7 @@ const saveNewProject = () => {
     alert("please fill in all fields to continue.");
   }
   if (!newProject.value.image) {
-    imageError.value = "Please select an image.";
+    alert("Please select an image.");
     return;
   }
   const newItem = {
