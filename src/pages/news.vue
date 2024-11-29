@@ -181,7 +181,6 @@
             <VTextField required class="mb-3" label="title" v-model="newProject.title" />
             <VTextField required class="mb-3" label="subtitle" v-model="newProject.subtitle" />
             <VTextField required label="phone number" v-model="newProject.phoneNumber" />
-            <VTextField required class="mt-3" label="Date" v-model="newProject.date" />
             <VFileInput required class="mt-3" label="Image" @change="(e: any) => handleImageUpload(e, 'add')"
               v-model="newProject.image" accept="image/*" />
 
@@ -242,7 +241,6 @@
           <VTextField class="mb-4" label="Title" required v-model="editItemTarget.title" />
           <VTextField label="Subtitle" v-model="editItemTarget.subtitle"></VTextField>
           <VTextField required label="Phone Number" class="mt-4" v-model="editItemTarget.phoneNumber" />
-          <VTextField required label="Date" class="mt-4" v-model="editItemTarget.date" />
           <VFileInput class="mt-4" label="Image" @change="(e: any) => handleImageUpload(e, 'edit')" accept="image/*" />
           <div v-if="editItemTarget.image" class="mt-3">
             <img :src="editItemTarget.image" alt="Preview"
@@ -309,6 +307,19 @@ const listCurrentPage = ref(1);
 const imageError = ref("");
 const imagePreview = ref<string | null>(null);
 
+const formatDate = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  };
+  return new Intl.DateTimeFormat('en-CA', options).format(date).replace(', ', ' ');
+};
+
+
 const items = ref([
   {
     id: 1,
@@ -316,7 +327,7 @@ const items = ref([
     subtitle: "Subtitle 1",
     phoneNumber: "07721573742",
     image: "images/pages/1.png",
-    date: "07/11/2024",
+    date: formatDate(new Date('2003-03-05 3:00')),
   },
   {
     id: 2,
@@ -324,7 +335,7 @@ const items = ref([
     subtitle: "Subtitle 2",
     phoneNumber: "07721573742",
     image: "images/pages/2.png",
-    date: "07/11/2024",
+    date: formatDate(new Date('2018-03-03 14:00')),
   },
   {
     id: 3,
@@ -332,7 +343,7 @@ const items = ref([
     subtitle: "Subtitle 3",
     phoneNumber: "07721573742",
     image: "images/pages/3.png",
-    date: "07/11/2024",
+    date: formatDate(new Date('2013-03-03 14:00')),
   },
   {
     id: 4,
@@ -340,7 +351,7 @@ const items = ref([
     subtitle: "Subtitle 4",
     phoneNumber: "07721573742",
     image: "images/pages/5.jpg",
-    date: "07/11/2024",
+    date: formatDate(new Date('2016-03-03 14:00')),
   },
   {
     id: 5,
@@ -348,7 +359,7 @@ const items = ref([
     subtitle: "Subtitle 5",
     phoneNumber: "07721573742",
     image: "images/pages/6.jpg",
-    date: "07/01/2024",
+    date: formatDate(new Date('2011-03-03 14:00')),
   },
   {
     id: 6,
@@ -356,7 +367,7 @@ const items = ref([
     subtitle: "Subtitle 6",
     phoneNumber: "07721573742",
     image: "images/pages/3.png",
-    date: "01/11/2024",
+    date: formatDate(new Date('2012-03-03 14:00')),
   },
   {
     id: 7,
@@ -364,7 +375,7 @@ const items = ref([
     subtitle: "Subtitle 7",
     phoneNumber: "07721573742",
     image: "images/pages/1.png",
-    date: "07/11/2024",
+    date: formatDate(new Date('2013-03-03 14:00')),
   },
   {
     id: 8,
@@ -372,9 +383,12 @@ const items = ref([
     subtitle: "Subtitle 8",
     phoneNumber: "07721573742",
     image: "images/pages/2.png",
-    date: "07/11/2024",
+    date: formatDate(new Date('2013-03-03 14:00')),
   },
 ]);
+
+
+
 
 
 const saveEdit = () => {
@@ -382,8 +396,7 @@ const saveEdit = () => {
   if (
     !editItemTarget.value.title?.trim() ||
     !editItemTarget.value.subtitle?.trim() ||
-    !editItemTarget.value.phoneNumber?.trim() ||
-    !editItemTarget.value.date?.trim()
+    !editItemTarget.value.phoneNumber?.trim()
   ) {
     alert("Please fill in all required fields.");
     return;
@@ -397,7 +410,6 @@ const saveEdit = () => {
         title: editItemTarget.value.title.trim(),
         subtitle: editItemTarget.value.subtitle.trim(),
         phoneNumber: editItemTarget.value.phoneNumber.trim(),
-        date: editItemTarget.value.date.trim(),
         image: editItemTarget.value.image, // Make sure to include the image
       };
 
@@ -491,20 +503,20 @@ const cancelAddProject = () => {
     subtitle: "",
     phoneNumber: "",
     image: "",
-    date: "",
     imagePreview: null,
   };
   imageError.value = "";
+  isSaving.value = false
 };
 
 const cancelEdit = () => {
   editDialogVisible.value = false;
+
   editItemTarget.value = {
     id: null,
     title: "",
     subtitle: "",
     phoneNumber: "",
-    date: "",
     image: "",
   };
 };
@@ -513,8 +525,7 @@ const saveNewProject = () => {
   if (
     !newProject.value.title?.trim() ||
     !newProject.value.subtitle?.trim() ||
-    !newProject.value.phoneNumber?.trim() ||
-    !newProject.value.date?.trim()
+    !newProject.value.phoneNumber?.trim()
   ) {
     alert("please fill in all fields to continue.");
   }
@@ -522,13 +533,14 @@ const saveNewProject = () => {
     alert("Please select an image.");
     return;
   }
+  isSaving.value = true
   const newItem = {
     id: generateId(),
     title: newProject.value.title?.trim(),
     subtitle: newProject.value.subtitle?.trim(),
     phoneNumber: newProject.value.phoneNumber?.trim(),
     image: newProject.value.imagePreview,
-    date: newProject.value.date?.trim(),
+    date: formatDate(new Date()),
   };
   items.value = [...items.value, { ...newItem }];
   cancelAddProject();
