@@ -9,31 +9,19 @@ export default [
   },
   {
     title: 'الخدمات',
-    to: { name: 'trainers' },
+    to: {
+      name: 'services'
+    },
     icon: { icon: 'tabler:users' },
   },
   {
     title: 'الرعاة',
-    to: { name: 'company' },
+    to: {
+      name: 'partnerships'
+    },
     icon: { icon: 'tabler:building-community' },
   },
-  // { heading: 'الكورسات' },
-  // {
-  //   title: 'جميع الكورسات',
-  //   to: { name: 'sections' },
-  //   icon: { icon: 'fluent-mdl2:sections' },
-  //   children: [
-  //     {
-  //       title: 'الكورسات المسجلة',
-  //       to: { name: 'recording-course' },
-  //     },
-  //     {
-  //       title: 'الكورسات المجدولة',
-  //       to: { name: 'schedul-course' },
-  //     },
-  //   ]
-  // },
-  // { heading: 'باقي التفاصيل' },
+
   {
     title: 'شريط التمرير',
     to: { name: 'slider' },
@@ -41,12 +29,12 @@ export default [
   },
   {
     title: 'المشاريع',
-    to: { name: 'news' },
+    to: { name: 'projects' },
     icon: { icon: 'tabler:radio' },
   },
   {
     title: 'المقالات',
-    to: { name: 'permissions' },
+    to: { name: 'articles' },
     icon: { icon: 'ic:baseline-location-on' },
   },
   {

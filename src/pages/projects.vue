@@ -473,7 +473,6 @@ const filterItems = () => {
     );
   });
 
-  console.log("Filtered Items:", filteredItems.value);
 };
 
 const paginatedGridItems = computed(() => {
@@ -559,7 +558,6 @@ const openDeleteDialog = (item: any) => {
 };
 
 const openEditDialog = (item: any) => {
-  console.log("opening edit dialog", item);
 
   editItemTarget.value = { ...item };
   editDialogVisible.value = true;
